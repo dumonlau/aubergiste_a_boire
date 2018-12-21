@@ -49,9 +49,25 @@ sublist(SL,[_|T]) :- sublist(SL,T).
 
 nom_vins_uniforme(Lmots,L_mots_unif) :-
    L1 = Lmots,
-   replace_vin([beaumes,de,venise,2015],beaumes_de_venise_2015,L1,L2),
-   replace_vin([les,chaboeufs,2013],les_chaboeufs_2013,L2,L3),
-   L_mots_unif = L3.
+   replace_vin([chateau,moulin,de,mallet,2014],chateau_moulin_de_mallet_2014,L1,L2),
+   replace_vin([chateau,la,fleur,baudron,2014],chateau_la_fleur_baudron_2014,L2,L3),
+   replace_vin([chateau,bois,vert,2014],chateau_bois_vert_2014,L3,L4),
+   replace_vin([chateau,paret,2012],chateau_paret_2012,L4,L5),
+   replace_vin([chateau,menota,2014],chateau_menota_2014,L5,L6),
+   replace_vin([madiran,vieilles,vignes,2006],madiran_vieilles_vignes_2006,L6,L7),
+   replace_vin([chateau,du,moulin,neuf,2014],chateau_du_moulin_neuf_2014,L7,L8),
+   replace_vin([chateau,milon,la,grave,2012],chateau_milon_la_grave_2012,L8,L9),
+   replace_vin([chateau,roc,de,binet,2010],chateau_roc_de_binet_2010,L9,L10),
+   replace_vin([chateau,ruat,2010],chateau_ruat_2010,L10,L11),
+   replace_vin([chateau,les,polyanthas,2010],chateau_les_polyanthas_2011,L11,L12),
+   replace_vin([chateau,la,menotte,2012],chateau_la_menotte_2012,L12,L13),
+   replace_vin([la,fleur,de,pomys,2012],la_fleur_de_pomys_2012,L13,L14),
+   replace_vin([florilege,pauillac,2011],florilege_pauillac_2011,L14,L15),
+   replace_vin([florilege,saint,julien,2010],florilege_saint_julien_2010,L15,L16),
+   replace_vin([florilege,pomerol,2012],florilege_pomerol_2012,L16,L17),
+   replace_vin([beaumes,de,venise,2015],beaumes_de_venise_2015,L17,L18),
+   replace_vin([les,chaboeufs,2013],les_chaboeufs_2013,L18,L19),
+   L_mots_unif = L19.
 
 replace_vin(L,X,In,Out) :-
    append(L,Suf,In), !, Out = [X|Suf].
@@ -62,6 +78,23 @@ replace_vin(L,X,[H|In],[H|Out]) :-
 % ----------------------------------------------------------------%
 
 % Bordeaux %
+
+nom(chateau_moulin_de_mallet_2014,'Ch. Moulin de Mallet 2014 - Bordeaux').
+nom(chateau_la_fleur_baudron_2014, 'Ch. La Fleur Baudron 2014 - Bordeaux Supérieur').
+nom(chateau_bois_vert_2014, 'Ch. Bois Vert "Cuvée Elégance" 2014 ').
+nom(chateau_paret_2012, 'Ch. Paret 2012').
+nom(chateau_menota_2014, 'Ch. Ménota 2014').
+nom(madiran_vieilles_vignes_2006, 'Madiran Vieilles Vignes 2006').
+nom(chateau_du_moulin_neuf_2014, 'Ch. Moulin Neuf 2014').
+nom(chateau_milon_la_grave_2012, 'Ch. Milon La Grave 2012').
+nom(chateau_roc_de_binet_2010, 'Ch. Roc de Binet 2010').
+nom(chateau_ruat_2010, 'Ch. Ruat 2010').
+nom(chateau_les_polyanthas_2010,'Ch. Les Polyanthas 2010').
+nom(chateau_la_menotte_2012, 'Ch. La Menotte 2012').
+nom(la_fleur_de_pomys_2012, 'La Fleur de Pomys 2012').
+nom(florilege_pauillac_2011, 'Florilège Pauillac 2011').
+nom(florilege_saint_julien_2010, 'Florilège Saint Julien 2010').
+nom(florilege_pomerol_2012, 'Florilège Pomerol 2012').
 
 vignoble(chateau_moulin_de_mallet_2014,bordeaux).
 vignoble(chateau_la_fleur_baudron_2014,bordeaux).
@@ -80,22 +113,6 @@ vignoble(florilege_pauillac_2011,bordeaux).
 vignoble(florilege_saint_julien_2010,bordeaux).
 vignoble(florilege_pomerol_2012,bordeaux).
 
-nom(chateau_moulin_de_mallet_2014,'Ch. Moulin de Mallet 2014 - Bordeaux').
-nom(chateau_la_fleur_baudron_2014, 'Ch. La Fleur Baudron 2014 - Bordeaux Supérieur').
-nom(chateau_bois_vert_2014, 'Ch. Bois Vert "Cuvée Elégance" 2014 ').
-nom(chateau_paret_2012, 'Ch. Paret 2012').
-nom(chateau_menota_2014, 'Ch. Ménota 2014').
-nom(madiran_vieilles_vignes_2006, 'Madiran Vieilles Vignes 2006').
-nom(chateau_du_moulin_neuf_2014, 'Ch. Moulin Neuf 2014').
-nom(chateau_milon_la_grave_2012, 'Ch. Milon La Grave 2012').
-nom(chateau_roc_de_binet_2010, 'Ch. Roc de Binet 2010').
-nom(chateau_ruat_2010, 'Ch. Ruat 2010').
-nom(chateau_les_polyanthas_2010,'Ch. Les Polyanthas 2010').
-nom(chateau_la_menotte_2012, 'Ch. La Menotte 2012').
-nom(la_fleur_de_pomys_2012, 'La Fleur de Pomys 2012').
-nom(florilege_pauillac_2011, 'Florilège Pauillac 2011').
-nom(florilege_saint_julien_2010, 'Florilège Saint Julien 2010').
-nom(florilege_pomerol_2012, 'Florilège Pomerol 2012').
 
 millesime(les_chaboeufs_2013, 2013).
 millesime(chateau_moulin_de_mallet_2014, 2014).
@@ -115,7 +132,6 @@ millesime(florilege_pauillac_2011, 2011).
 millesime(florilege_saint_julien_2010, 2010).
 millesime(florilege_pomerol_2012, 2012).
 
-prix(les_chaboeufs_2013, 42.35).
 prix(chateau_moulin_de_mallet_2014, 6.85).
 prix(chateau_la_fleur_baudron_2014, 7.48).
 prix(chateau_bois_vert_2014, 8.11).
