@@ -63,7 +63,6 @@ replace_vin(L,X,[H|In],[H|Out]) :-
 
 % Bordeaux %
 
-vignoble(les_chaboeufs_2013, bordeaux).
 vignoble(chateau_moulin_de_mallet_2014,bordeaux).
 vignoble(chateau_la_fleur_baudron_2014,bordeaux).
 vignoble(chateau_bois_vert_2014,bordeaux).
@@ -81,8 +80,6 @@ vignoble(florilege_pauillac_2011,bordeaux).
 vignoble(florilege_saint_julien_2010,bordeaux).
 vignoble(florilege_pomerol_2012,bordeaux).
 
-nom(beaumes_de_venise_2015,'Beaumes-de-Venise 2015').
-nom(les_chaboeufs_2013,'Nuits-Saint-Georges 1er Cru 2013, Les Chaboeufs').
 nom(chateau_moulin_de_mallet_2014,'Ch. Moulin de Mallet 2014 - Bordeaux').
 nom(chateau_la_fleur_baudron_2014, 'Ch. La Fleur Baudron 2014 - Bordeaux Supérieur').
 nom(chateau_bois_vert_2014, 'Ch. Bois Vert "Cuvée Elégance" 2014 ').
@@ -118,7 +115,6 @@ millesime(florilege_pauillac_2011, 2011).
 millesime(florilege_saint_julien_2010, 2010).
 millesime(florilege_pomerol_2012, 2012).
 
-prix(beaumes_de_venise_2015, 12.34).
 prix(les_chaboeufs_2013, 42.35).
 prix(chateau_moulin_de_mallet_2014, 6.85).
 prix(chateau_la_fleur_baudron_2014, 7.48).
@@ -138,12 +134,6 @@ prix(florilege_saint_julien_2010, 30.65).
 prix(florilege_pomerol_2012, 31.04).
 
 
-bouche(beaumes_de_venise_2015,
-  [ [ 'les aromes de fraise, de violette cotoient les nuances' ],
-    [ 'de baies de genevrier, de sureau et une delicate touche' ],
-    [ 'de fleur d\'oranger. Cette intensite se poursuit en' ],
-    [ 'bouche avec des saveurs juteuses, racees et tres elegantes', '.' ]
-  ]).
 bouche(chateau_moulin_de_mallet_2014,
   [
      ['un joli vin, classique, polyvalent, avec un bel éventail aromatique et des tannins fins', '.']
@@ -343,11 +333,6 @@ robe(florilege_pomerol_2012,
      ['.']
   ]).
 
-
-description(beaumes_de_venise_2015,
-    [ [ 'vignoble situe au sud-est des Dentelles de Montmirail', '.' ],
-      [ 'grand vin', '.' ]
-]).
 description(chateau_moulin_de_mallet_2014,
   [
      ['vignoble situé non loin de Castillon-la-Bataille et des rives de la Dordogne','.'],
