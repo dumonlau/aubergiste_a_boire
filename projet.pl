@@ -28,9 +28,11 @@ produire_reponse([fin],[L1]) :-
    L1 = [merci, de, m, '\'', avoir, consulte], !.
 
 produire_reponse(L,Rep) :-
-%   write(L),
+   write(L),
    mclef(M,_), member(M,L),
    clause(regle_rep(M,_,Pattern,Rep),Body),
+   write(Pattern),
+   write('clause'),
    match_pattern(Pattern,L),
    call(Body), !.
 
@@ -67,7 +69,18 @@ nom_vins_uniforme(Lmots,L_mots_unif) :-
    replace_vin([florilege,pomerol,2012],florilege_pomerol_2012,L16,L17),
    replace_vin([beaumes,de,venise,2015],beaumes_de_venise_2015,L17,L18),
    replace_vin([les,chaboeufs,2013],les_chaboeufs_2013,L18,L19),
-   L_mots_unif = L19.
+   replace_vin([syrah,2015],syrah_2015,L19,L20),
+   replace_vin([cotes,rhones,village,2014],cotes_rhones_village_2014,L20,L21),
+   replace_vin([tautavel,2014],tautavel_2014, L21,L22),
+   replace_vin([lirac,2015],lirac_2015, L22, L23),
+   replace_vin([cairanne,2014],cairanne_2014, L23, L24),
+   replace_vin([beaumes,venise,2015],beaumes_venise_2015, L24, L25),
+   replace_vin([vacqueyras,2014],vacqueyras_2014, L25, L26),
+   replace_vin([saint-joseph,2014],saint_joseph_2014, L26, L27),
+   replace_vin([gigondas,2014],gigondas_2014, L27, L28),
+   replace_vin([chateauneuf,du,pape,rouge,2013],chateauneuf_du_pape_rouge_2013, L28, L29),
+   replace_vin([hermitage,rouge,2007],hermitage_rouge_2007, L29, L30),
+   L_mots_unif = L30.
 
 replace_vin(L,X,In,Out) :-
    append(L,Suf,In), !, Out = [X|Suf].
@@ -484,187 +497,195 @@ prix(hermitage_rouge_2007, 33.98).
 
 bouche(syrah_2015,
       [
-       ['.']
+       ['en bouche, il présente un beau caractère, avec des saveurs de fruits rouges associées à des nuances de réglisses','.']
       ]).
 bouche(cotes_rhones_village_2014,
       [
-       ['.']
+       ['l\'attaque est tout en fruit avec des saveurs fruitées et épicées, la suite est de caractère, racée avec une nuance de réglisse','.']
        ]).
 bouche(tautavel_2014,
       [
-       ['.']
+       ['la bouche dévoile d\'abord des saveurs de fruits frais et d\'épices','.'],
+       ['elle est remarquablement concentrée','.'],
+       ['finale cacao, à la fois dense, puissante, juteuse et harmonieuse','.']
        ]).
 bouche(lirac_2015,
       [
-       ['.']
+       ['la bouche est à la fois dense et minérale, avec des saveurs fruitées et épicées (aiguilles de pin, eucalyptus)','.'],
+       ['la finale laisse un très agréable souvenir','.']
        ]).
 bouche(cairanne_2014,
       [
-       ['.']
+       ['la bouche est équilibrée avec des tannins soyeux','.'],
+       ['finale de caractère, de belle persistance','.']
        ]).
 bouche(beaumes_venise_2015,
       [
-       ['.']
+       ['cette intensité se poursuit en bouche avec des saveurs juteuses, racées et très élégantes','.']
        ]).
 bouche(vacqueyras_2014,
       [
-       ['.']
+       ['les saveurs sont à la fois intenses (fruits surmûris, guimauve, réglisse) et juteuses','.'],
+       ['la finale laisse le souvenir d\'un cru très plaisant, à la fois dense et velouté','.']
        ]).
 bouche(saint_joseph_2014,
       [
-       ['.']
+       ['remarquable équilibre gras-fraîcheur-matière','.']
        ]).
 bouche(gigondas_2014,
       [
-       ['.']
+       ['la bouche est racée, riche en saveur complexes (fruits noirs, épices)','.']
        ]).
 bouche(chateauneuf_du_pape_rouge_2013,
       [
-       ['.']
+       ['Les saveurs sont intenses, racées, riches et complexes','.']
        ]).
 bouche(hermitage_rouge_2007,
       [
-       ['.']
+       ['grande harmonie en bouche, très homogène, avec une belle profondeur','.'],
+       ['aucune dureté','.']
        ]).
 
 
 nez(syrah_2015,
       [
-       ['.']
+       ['nef expressif mêlant les fruits rouges, les agrumes à jolies notes d\'épices','.']
       ]).
 nez(cotes_rhones_village_2014,
       [
-       ['.']
+       ['bouquet plein de charme, très aromatique','.']
        ]).
 nez(tautavel_2014,
       [
-       ['.']
+       ['bouquet intense de fruits noirs (noyaux) et d\'épices associé à des notes de chocolat et de garrigue','.']
        ]).
 nez(lirac_2015,
       [
-       ['.']
+       ['nez parfumé, dominé par les fruits à noyaux et les épices (cannelle, réglisse)','.']
        ]).
 nez(cairanne_2014,
       [
-       ['.']
+       ['les arômes sont très expressifs, très purs, bien typés, évoquant la guimauve, le bois de genévrier, le tabac','.']
        ]).
 nez(beaumes_venise_2015,
       [
-       ['.']
+       ['les arômes de fraise, de violette, côtoient les nuances de baie de genévrier, de sureau et une délicate touche de fleur d\'oranger','.']
        ]).
 nez(vacqueyras_2014,
       [
-       ['.']
+       ['les saveurs sont à la fois intenses (fruits surmûris, guimauve, réglisse) et juteuses','.']
        ]).
 nez(saint_joseph_2014,
       [
-       ['.']
+        ['très aromatique, avec beaucoup de fruit (pamplemousse), des notes d\'épices (poivre) et une nuance empyreumatique (bois brûlé)','.']
        ]).
 nez(gigondas_2014,
       [
-       ['.']
+       ['le nez riche et concentré, annonce un vin très élégant, avec un fond remarquable','.']
        ]).
 nez(chateauneuf_du_pape_rouge_2013,
       [
-       ['.']
+       ['le nez est complexe, expressif et suave, associant arômes de fruits rouges, de cannelle et d\'épices (poivre, réglisse)','.'],
+       ['les saveurs sont intenses, racées, riches et complexes','.']
        ]).
 nez(hermitage_rouge_2007,
       [
-       ['.']
+       ['Nez au bouquet complexe, très profond, associant les fruits noirs, les agrumes à des notes de vanille, de tabac et de réglisse','.']
        ]).
 
 
 robe(syrah_2015,
       [
-       ['.']
+       ['belle robe rouge profond','.']
       ]).
 robe(cotes_rhones_village_2014,
       [
-       ['.']
+       ['','.']
        ]).
 robe(tautavel_2014,
       [
-       ['.']
+       ['robe noire','.']
        ]).
 robe(lirac_2015,
       [
-       ['.']
+       ['robe grenat profond','.']
        ]).
 robe(cairanne_2014,
       [
-       ['.']
+       ['couleur cerise du Nord','.']
        ]).
 robe(beaumes_venise_2015,
       [
-       ['.']
+       ['','.']
        ]).
 robe(vacqueyras_2014,
       [
-       ['.']
+       ['','.']
        ]).
 robe(saint_joseph_2014,
       [
-       ['.']
+       ['','.']
        ]).
 robe(gigondas_2014,
       [
-       ['.']
+       ['','.']
        ]).
 robe(chateauneuf_du_pape_rouge_2013,
       [
-       ['.']
+       ['','.']
        ]).
 robe(hermitage_rouge_2007,
       [
-       ['.']
+       ['','.']
        ]).
 
 
 description(syrah_2015,
       [
-       ['.']
+       ['un élevage sous bois de 12 mois a permis aux tannins de se fondre et ainsi de laisser en finale le souvenir d\'un vin très harmonieux','.']
       ]).
 description(cotes_rhones_village_2014,
       [
-       ['.']
+       ['magnifique terroir argilo-limoneux à proximité de l\'Aygues','.']
        ]).
 description(tautavel_2014,
       [
-       ['.']
+       ['','.']
        ]).
 description(lirac_2015,
       [
-       ['.']
+       ['','.']
        ]).
 description(cairanne_2014,
       [
-       ['.']
+       ['magnifique terroir à côté de Rasteau, en altitude','.']
        ]).
 description(beaumes_venise_2015,
       [
-       ['.']
+       ['vignoble situé au sud-est des Dentelles de Montmirail','.']
        ]).
 description(vacqueyras_2014,
       [
-       ['.']
+       ['les sols caillouteux de Vacqueyras sont à l\'origine de vins chaleureux, fruits et épicés','.']
        ]).
 description(saint_joseph_2014,
       [
-       ['.']
+       ['vin "typé" syrah de Nord, très aromatique','.'],
+       ['Remarquable équilibre gras-fraîcheur-matière','.']
        ]).
 description(gigondas_2014,
       [
-       ['.']
+       ['superbe vignoble escarpé situé au pied des Dentelles de Montmirail','.'],
+       ['le terroir est caillouteux et particulièrement adapté à la culture du cépage grenache noir (présent à 80%)','.']
        ]).
 description(chateauneuf_du_pape_rouge_2013,
       [
-       ['.']
+       ['vignes reposant sur des terrasses du Quaternaire constituée d\'une épaisse couche de galets roulés, à l\'origine de vins puissants et charnus','.']
        ]).
 description(hermitage_rouge_2007,
       [
-       ['.']
+       ['vin de grande allure, racé, qui s\'épanouit superbement','.']
        ]).
-
 
 
 % Mots-clés %
@@ -684,7 +705,7 @@ mclef(vins,5).
 regle_rep(bouche,1,
   [ que, donne, le, Vin, en, bouche ],
   Rep ) :-
-
+     write('regle1'),
      bouche(Vin,Rep).
 
 % ----------------------------------------------------------------%
