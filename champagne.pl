@@ -1,10 +1,27 @@
-nom(cremant_loire_brut, 'Crémant de Loire Brut').
+nom(creman_loire_brut, 'Crémant de Loire Brut').
 nom(brut_reserve, 'Champagne Brut Réserve').
 nom(extra_brut, 'Champagne Extra Brut').
 nom(brut_oeil_perdrix, 'Champagne Brut Oeil de Perdrix').
 nom(brut_rose_saignee, 'Champagne Brut Rosé de Saignée').
 nom(brut_or_blanc, 'Champagne Brut Or Blanc').
 nom(brut_prestige, 'Champagne Brut Prestige').
+
+conseil(creman_loire_brut, oui).
+conseil(brut_reserve, oui).
+conseil(extra_brut, non).
+conseil(brut_oeil_perdrix, non).
+conseil(brut_rose_saignee, non).
+conseil(brut_or_blanc, non).
+conseil(brut_prestige, non).
+
+accompagnement(creman_loire_brut, [canard, poulet]).
+accompagnement(brut_reserve, [poisson, boeuf]).
+accompagnement(extra_brut, [cavier, poisson]).
+accompagnement(brut_oeil_perdrix, [grenouille]).
+accompagnement(brut_rose_saignee, [canard, boeuf]).
+accompagnement(brut_or_blanc, [pigeon]).
+accompagnement(brut_prestige, [poisson, dinde, homard]).
+
 
 vignoble(creman_loire_brut,champagne).
 vignoble(brut_reserve,champagne).
@@ -33,7 +50,7 @@ bouche(brut_reserve,
   ]).
 bouche(extra_brut,
   [
-     ['','.']
+     [amer,vert,'.']
   ]).
 bouche(brut_oeil_perdrix,
   [

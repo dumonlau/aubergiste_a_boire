@@ -28,19 +28,17 @@ produire_reponse([fin],[L1]) :-
    L1 = [merci, de, m, '\'', avoir, consulte], !.
 
 produire_reponse(L,Rep) :-
-   write(L),
-   mclef(M,_), member(M,L),
+
+   mclef(M,_),
+   member(M,L),
    clause(regle_rep(M,_,Pattern,Rep),Body),
-   write('pattern: '),
-   write(Pattern),
    match_pattern(Pattern,L),
-   write('match'),
    call(Body), !.
 
 produire_reponse(_,[L1,L2, L3]) :-
-   L1 = [je, ne, sais, pas, '.'],
-   L2 = [les, etudiants, vont, m, '\'', aider, '.' ],
-   L3 = ['vous le verrez !'].
+   L1 = [je, ne, comprends, pas, votre, question, '.'],
+   L2 = [veuillez, la, reformuler],
+   L3 = ['j\'essaierai d\'y répondre'].
 
 match_pattern(Pattern,Lmots) :-
    nom_vins_uniforme(Lmots,L_mots_unif),
@@ -84,9 +82,9 @@ nom_vins_uniforme(Lmots,L_mots_unif) :-
    replace_vin([cremant,loire,brut],cremant_loire_brut, L30, L31),
    replace_vin([champagne,brut,reserve],brut_reserve, L31, L32),
    replace_vin([champagne,extra,brut],extra_brut, L32, L33),
-   replace_vin([brut,oeil,perdrix],brut_oeil_perdrix, L33, L34),
-   replace_vin([brut,rose,saignee],brut_rose_saignee, L34, L35),
-   replace_vin([brut,or,blanc],brut_or_blanc, L35, L36),
+   replace_vin([champagne,brut,oeil,perdrix],brut_oeil_perdrix, L33, L34),
+   replace_vin([champagne,brut,rose,saignee],brut_rose_saignee, L34, L35),
+   replace_vin([champagne,brut,or,blanc],brut_or_blanc, L35, L36),
    replace_vin([champagne,brut,prestige],brut_prestige, L36, L37),
    L_mots_unif = L37.
 
@@ -109,6 +107,7 @@ mclef(vignoble,10).
 mclef(millesime,10).
 mclef(bouche,10).
 mclef(nez,10).
+mclef(appellation,10).
 mclef(robe,5).
 mclef(prix,10).
 mclef(vin,5).
@@ -120,7 +119,6 @@ mclef(vins,5).
 regle_rep(bouche,1,
   [ que, donne, le, Vin, en, bouche ],
   Rep ) :-
-     write('regle1'),
      bouche(Vin,Rep).
 
 % ----------------------------------------------------------------%
@@ -149,6 +147,102 @@ prix_vin_min_max(Vin,P,Min,Max) :-
 lvins_prix_min_max(Min,Max,Lvins) :-
    findall( (Vin,P) , prix_vin_min_max(Vin,P,Min,Max), Lvins ).
 
+%-----------------------------------------------------------------%
+
+regle_rep(vins,3,
+   [ quels, vins, de, Vignoble, avez, vous],
+    Rep) :-
+   lvins_vignoble(Vignoble,Lvins),
+   rep_lvins_vignoble(Lvins,Rep).
+
+rep_lvins_vignoble([],[[aucun, '.']]).
+rep_lvins_vignoble([H|T],[ [plusieurs, '.', nous, avons, dans, notre, cave ] | L]) :-
+   rep_litems_vin_vignoble([H|T],L).
+
+rep_litems_vin_vignoble([],[]) :- !.
+rep_litems_vin_vignoble([(V,X)|L],[Irep|L1]) :-
+   nom(V,A),
+   Irep = ['- ', A],
+   rep_litems_vin_vignoble(L,L1).
+
+lvins_vignoble(Vignoble,Lvins) :-
+   findall((Vin,Vignoble),vignoble(Vin,Vignoble), Lvins).
+
+% -----------------------------------------------------------------------%
+regle_rep(appellation,4,
+  [ que, recouvre,l,appellation, Vin],
+  Rep ) :-
+
+     description(Vin,Rep).
+
+% -----------------------------------------------------------------------%
+regle_rep(vins,5,
+   [ quels, vins, de, Vignoble, me, conseillez, vous],
+    Rep) :-
+   lvins_vignoble_conseil(Vignoble,Lvins),
+   rep_lvins_vignoble_conseil(Lvins,Rep).
+
+rep_lvins_vignoble_conseil([],[[aucun, '.']]).
+rep_lvins_vignoble_conseil([H|T],[ [plusieurs, '.', nous, vous, conseillons ] | L]) :-
+   rep_litems_vin_vignoble_conseil([H|T],L).
+
+rep_litems_vin_vignoble_conseil([],[]) :- !.
+rep_litems_vin_vignoble_conseil([V|L],[Irep|L1]) :-
+   nom(V,A),
+   Irep = ['- ', A],
+   rep_litems_vin_vignoble_conseil(L,L1).
+
+lvins_vignoble_conseil(Vignoble,Lvins) :-
+   findall(Vin,vignoble(Vin,Vignoble), Lvins1),
+   findall(Vin,conseil(Vin,oui), Lvins2),
+   intersection(Lvins1, Lvins2, Lvins).
+
+% -----------------------------------------------------------------------%
+regle_rep(vins,6,
+   [ quels, autres, vins, de, Vignoble, auriez, vous],
+    Rep) :-
+   lvins_vignoble_autre(Vignoble,Lvins),
+   rep_lvins_vignoble_autre(Lvins,Rep).
+
+rep_lvins_vignoble_autre([],[[aucun, '.']]).
+rep_lvins_vignoble_autre([H|T],[ [plusieurs, '.', nous, avons, encore ] | L]) :-
+   rep_litems_vin_vignoble_autre([H|T],L).
+
+rep_litems_vin_vignoble_autre([],[]) :- !.
+rep_litems_vin_vignoble_autre([V|L],[Irep|L1]) :-
+   nom(V,A),
+   Irep = ['- ', A],
+   rep_litems_vin_vignoble_autre(L,L1).
+
+lvins_vignoble_autre(Vignoble,Lvins) :-
+   findall(Vin,vignoble(Vin,Vignoble), Lvins1),
+   findall(Vin,conseil(Vin,non), Lvins2),
+   intersection(Lvins1, Lvins2, Lvins).
+
+% -----------------------------------------------------------------------%
+regle_rep(vins,7,
+   [pour, noel, je, pense, faire, du, Accompagnement, quels, vins, conseillez, vous],
+    Rep) :-
+
+     lvins_accompagnement(Accompagnement,Lvins),
+     rep_lvins_accompagnement(Lvins,Rep).
+
+rep_lvins_accompagnement([], [[ aucune, idée, '.' ]]).
+rep_lvins_accompagnement([H|T], [ [ oui, '.', je, vous, conseille ] | L]) :-
+   rep_litems_accompagnement([H|T],L).
+
+rep_litems_accompagnement([],[]) :- !.
+rep_litems_accompagnement([V|L], [Irep|Ll]) :-
+   nom(V,A),
+   Irep = [ '- ', A ],
+   rep_litems_accompagnement(L,Ll).
+
+vin_accompagnement(Vin,A) :-
+   accompagnement(Vin,As),
+   member(A,As).
+
+lvins_accompagnement(A,Lvins) :-
+   findall(Vin , vin_accompagnement(Vin,A), Lvins ).
 
 
 
@@ -171,11 +265,18 @@ lire_question(LMots) :- read_atomics(LMots).
 %    Type is whitespace, punctuation, numeric, alphabetic, or special.
 
 my_char_type(46,period) :- !.
+
+% my_char_type(39,alphanumeric) :- !.%
+
 my_char_type(X,alphanumeric) :- X >= 65, X =< 90, !.
 my_char_type(X,alphanumeric) :- X >= 97, X =< 123, !.
 my_char_type(X,alphanumeric) :- X >= 48, X =< 57, !.
 my_char_type(X,whitespace) :- X =< 32, !.
-my_char_type(X,punctuation) :- X >= 33, X =< 47, !.
+my_char_type(X,punctuation) :- X >= 33, X =< 44, !.
+
+my_char_type(X,alphanumeric) :- X = 45, !.
+
+my_char_type(X,punctuation) :- X >= 46, X =< 47, !.
 my_char_type(X,punctuation) :- X >= 58, X =< 64, !.
 my_char_type(X,punctuation) :- X >= 91, X =< 96, !.
 my_char_type(X,punctuation) :- X >= 123, X =< 126, !.
