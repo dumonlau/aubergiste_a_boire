@@ -37,12 +37,13 @@ produire_reponse(L,Rep) :-
    write(' P1 : '),
    write(Pattern),
    match_pattern(Pattern,L),
+   write('OK pattern'),
    call(Body), !.
 
 produire_reponse(_,[L1,L2, L3]) :-
    L1 = [je, ne, comprends, pas, votre, question, '.'],
    L2 = [veuillez, la, reformuler, en, faisant, attention, à, 'l\'orthographe'],
-   L3 = ['j\'essaierai d\'y répondre'].
+   L3 = ['j\'essaierai alors d\'y répondre'].
 
 match_pattern(Pattern,Lmots) :-
    remplacer_liste_synonyme(Lmots, Lmots1),
@@ -60,7 +61,6 @@ remplacer_mot_synonyme(T,S) :-
        synonyme(T,S), !.
 
 remplacer_mot_synonyme(T,T).
-
 
 
 sublist(SL,L) :-
@@ -99,10 +99,10 @@ nom_vins_uniforme(Lmots,L_mots_unif) :-
    replace_vin([chateauneuf,du,pape,rouge,2013],chateauneuf_du_pape_rouge_2013, L28, L29),
    replace_vin([hermitage,rouge,2007],hermitage_rouge_2007, L29, L30),
    replace_vin([cremant,loire,brut],cremant_loire_brut, L30, L31),
-   replace_vin([champagne,brut,reserve],brut_reserve, L31, L32),
+   replace_vin([champagne,brut,réserve],brut_reserve, L31, L32),
    replace_vin([champagne,extra,brut],extra_brut, L32, L33),
    replace_vin([champagne,brut,oeil,perdrix],brut_oeil_perdrix, L33, L34),
-   replace_vin([champagne,brut,rose,saignee],brut_rose_saignee, L34, L35),
+   replace_vin([champagne,brut,rosé,de,saignée],brut_rose_saignee, L34, L35),
    replace_vin([champagne,brut,or,blanc],brut_or_blanc, L35, L36),
    replace_vin([champagne,brut,prestige],brut_prestige, L36, L37),
    L_mots_unif = L37.
@@ -134,6 +134,9 @@ mclef(prix,10).
 mclef(robe,5).
 mclef(vin,5).
 mclef(vins,5).
+mclef(température,5).
+mclef(accompagnement,5).
+mclef(accompagnements,5).
 
 
 % ----------------------------------------------------------------%
@@ -141,8 +144,21 @@ mclef(vins,5).
 regle_rep(bouche,1,
   [ que, donne, le, Vin, en, bouche ],
   Rep ) :-
+   write('vin1 : '),
+   write(Vin),
+   vin_bouche(Vin,Bouche),
+   rep_vin_bouche(Bouche,Rep).
 
-     bouche(Vin,Rep).
+rep_vin_bouche([[B|_]|_],[[non, spécifié,'.']]) :-
+   B = '',!.
+
+rep_vin_bouche(B,B).
+
+vin_bouche(Vin,Bouche) :-
+   bouche(Vin,Bouche),!.
+
+vin_bouche(Vin,[[non, spécifié,'.']]) :-
+   nom(Vin,_).
 
 % ----------------------------------------------------------------%
 
@@ -154,6 +170,7 @@ regle_rep(robe,10,
 
 %-----------------------------------------------------------------%
 
+%-----------------------------------------------------------------%
 regle_rep(vins,2,
   [ auriezvous, des, vins, entre, X, et, Y, eur ],
   Rep) :-
@@ -180,6 +197,8 @@ lvins_prix_min_max(Min,Max,Lvins) :-
 
 %-----------------------------------------------------------------%
 
+%-----------------------------------------------------------------%
+
 regle_rep(vins,3,
    [ quels, vins, de, Vignoble, avez, vous],
     Rep) :-
@@ -200,13 +219,21 @@ lvins_vignoble(Vignoble,Lvins) :-
    findall((Vin,Vignoble),vignoble(Vin,Vignoble), Lvins).
 
 % -----------------------------------------------------------------------%
+
+
+% -----------------------------------------------------------------------%
+
 regle_rep(appellation,4,
   [ que, recouvre,l,appellation, Vin],
   Rep ) :-
 
      description(Vin,Rep).
 
+
 % -----------------------------------------------------------------------%
+
+% -----------------------------------------------------------------------%
+
 regle_rep(vins,5,
    [ quels, vins, de, Vignoble, me, conseillez, vous],
     Rep) :-
@@ -229,6 +256,10 @@ lvins_vignoble_conseil(Vignoble,Lvins) :-
    intersection(Lvins1, Lvins2, Lvins).
 
 % -----------------------------------------------------------------------%
+
+
+% -----------------------------------------------------------------------%
+
 regle_rep(vins,6,
    [ quels, autres, vins, de, Vignoble, auriez, vous],
     Rep) :-
@@ -250,7 +281,12 @@ lvins_vignoble_autre(Vignoble,Lvins) :-
    findall(Vin,conseil(Vin,non), Lvins2),
    intersection(Lvins1, Lvins2, Lvins).
 
+
 % -----------------------------------------------------------------------%
+
+
+% -----------------------------------------------------------------------%
+
 regle_rep(vins,7,
    [pour, noel, je, pense, faire, du, Accompagnement, quels, vins, conseillez, vous],
     Rep) :-
@@ -269,11 +305,14 @@ rep_litems_accompagnement([V|L], [Irep|Ll]) :-
    rep_litems_accompagnement(L,Ll).
 
 vin_accompagnement(Vin,A) :-
-   accompagnement(Vin,As),
+   accompagnement(Vin,As,_),
    member(A,As).
 
 lvins_accompagnement(A,Lvins) :-
    findall(Vin , vin_accompagnement(Vin,A), Lvins ).
+
+% -----------------------------------------------------------------------%
+
 
 
 %------------------------------------------------------------------------%
@@ -301,6 +340,9 @@ prix_vin_max(Vin,P,Max) :-
 lvins_prix_max(Max,Lvins) :-
    findall( (Vin,P) , prix_vin_max(Vin,P,Max), Lvins ).
 
+% -----------------------------------------------------------------------%
+
+
 
 % -----------------------------------------------------------------------%
 regle_rep(millésimes,9,
@@ -325,7 +367,58 @@ lvins_millesime(Vignoble,Niveau,Lvins) :-
    findall(Vin,millesime(Vin,_,Niveau), Lvins2),
    intersection(Lvins1, Lvins2, Lvins).
 
+% -----------------------------------------------------------------------%
 
+% -----------------------------------------------------------------------%
+
+regle_rep(accompagnements,11,
+   [quels, sont, les, accompagnements, à, éviter, pour, le, Vin],
+    Rep) :-
+
+     vin_eviter(Vin,LMets),
+     write(' Ok2 '),
+     rep_vin_mets_eviter(LMets,Rep).
+
+rep_vin_mets_eviter([], [[ aucune, contre-indication, '.' ]]).
+rep_vin_mets_eviter([H|T], [ [ oui, '.', je, vous, déconseille ] | L]) :-
+   rep_litems_mets_eviter([H|T],L).
+
+rep_litems_mets_eviter([],[]) :- !.
+rep_litems_mets_eviter([M|L], [Irep|Ll]) :-
+   Irep = [ '- ', M],
+   rep_litems_mets_eviter(L,Ll).
+
+vin_eviter(Vin,LMets) :-
+   accompagnement(Vin,_,LMets),!.
+
+vin_eviter(Vin,LMets) :-
+   nom(Vin,_),
+   LMets = [].
+
+% -----------------------------------------------------------------------%
+
+% -----------------------------------------------------------------------%
+
+regle_rep(température,12,
+   [a, quelle, température, faut, il, servir, le, Vin],
+    Rep) :-
+     vin_temperatures(Vin,Tmin,Tmax),
+     rep_vin_temperatures([Tmin|Tmax],Rep).
+
+rep_vin_temperatures([?|?], [[ sans, préférence, de, température, '.' ]]) :- !.
+rep_vin_temperatures([Tmin|Tmax],[[je, vous, conseille, entre, Tmin,'°C', et,Tmax,'°C', '.']]).
+
+vin_temperatures(Vin, Tmin, Tmax) :-
+     service(Vin, Tmin, Tmax,_),!.
+
+vin_temperatures(Vin,Tmin,Tmax) :-
+   nom(Vin,_),
+   Tmin = '?',
+   Tmax = '?'.
+
+% -----------------------------------------------------------------------%
+
+% -----------------------------------------------------------------------%
 
 
 /* --------------------------------------------------------------------- */

@@ -1,3 +1,4 @@
+synonyme(à, a).
 synonyme(ch, chateau).
 synonyme(château, chateau).
 synonyme(champ, champagne).

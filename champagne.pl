@@ -56,10 +56,6 @@ bouche(brut_oeil_perdrix,
   [
      ['grande intensité aromatique','.']
   ]).
-bouche(brut_rose_saignee,
-  [
-     ['','.']
-  ]).
 bouche(brut_or_blanc,
   [
      ['bel équilibre fraîcheur-onctuosité','.']
