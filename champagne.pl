@@ -1,4 +1,4 @@
-nom(creman_loire_brut, 'Crémant de Loire Brut').
+nom(creman_loire_brut, 'Créman de Loire Brut').
 nom(brut_reserve, 'Champagne Brut Réserve').
 nom(extra_brut, 'Champagne Extra Brut').
 nom(brut_oeil_perdrix, 'Champagne Brut Oeil de Perdrix').

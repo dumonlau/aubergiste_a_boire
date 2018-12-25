@@ -15,6 +15,43 @@ nom(florilege_pauillac_2011, 'Florilège Pauillac 2011').
 nom(florilege_saint_julien_2010, 'Florilège Saint Julien 2010').
 nom(florilege_pomerol_2012, 'Florilège Pomerol 2012').
 
+
+conseil(chateau_moulin_de_mallet_2014,oui).
+conseil(chateau_la_fleur_baudron_2014, oui).
+conseil(chateau_bois_vert_2014, oui).
+conseil(chateau_paret_2012, oui).
+conseil(chateau_menota_2014, oui).
+conseil(madiran_vieilles_vignes_2006, non).
+conseil(chateau_du_moulin_neuf_2014, non).
+conseil(chateau_milon_la_grave_2012, non).
+conseil(chateau_roc_de_binet_2010, non).
+conseil(chateau_ruat_2010, non).
+conseil(chateau_les_polyanthas_2010,non).
+conseil(chateau_la_menotte_2012, non).
+conseil(la_fleur_de_pomys_2012, non).
+conseil(florilege_pauillac_2011, non).
+conseil(florilege_saint_julien_2010, non).
+conseil(florilege_pomerol_2012, non).
+
+
+accompagnement(chateau_moulin_de_mallet_2014, [biche]).
+accompagnement(chateau_la_fleur_baudron_2014, [sanglier]).
+accompagnement(chateau_bois_vert_2014,[faisan]).
+accompagnement(chateau_paret_2012, [caille]).
+accompagnement(chateau_menota_2014, [saumon]).
+accompagnement(madiran_vieilles_vignes_2006, [dinde]).
+accompagnement(chateau_du_moulin_neuf_2014, [veau]).
+accompagnement(chateau_milon_la_grave_2012, [boeuf]).
+accompagnement(chateau_roc_de_binet_2010, [canard]).
+accompagnement(chateau_ruat_2010, [boeuf]).
+accompagnement(chateau_les_polyanthas_2010, [pigeon]).
+accompagnement(chateau_la_menotte_2012, [porc]).
+accompagnement(la_fleur_de_pomys_2012, [porc]).
+accompagnement(florilege_pauillac_2011, [poisson]).
+accompagnement(florilege_saint_julien_2010, [poisson]).
+accompagnement(florilege_pomerol_2012, [porc]).
+
+
 vignoble(chateau_moulin_de_mallet_2014,bordeaux).
 vignoble(chateau_la_fleur_baudron_2014,bordeaux).
 vignoble(chateau_bois_vert_2014,bordeaux).

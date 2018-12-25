@@ -1,27 +1,3 @@
-vignoble(syrah_2015, rhone).
-vignoble(cotes_rhones_village_2014, rhone).
-vignoble(tautavel_2014, rhone).
-vignoble(lirac_2015, rhone).
-vignoble(cairanne_2014, rhone).
-vignoble(beaumes_venise_2015, rhone).
-vignoble(vacqueyras_2014, rhone).
-vignoble(saint_joseph_2014, rhone).
-vignoble(gigondas_2014, rhone).
-vignoble(chateauneuf_du_pape_rouge_2013, rhone).
-vignoble(hermitage_rouge_2007, rhone).
-vignoble(syrah_2015, languedoc).
-vignoble(cotes_rhones_village_2014,languedoc).
-vignoble(tautavel_2014,languedoc).
-vignoble(lirac_2015,languedoc).
-vignoble(cairanne_2014,languedoc).
-vignoble(beaumes_venise_2015,languedoc).
-vignoble(vacqueyras_2014,languedoc).
-vignoble(saint_joseph_2014,languedoc).
-vignoble(gigondas_2014,languedoc).
-vignoble(chateauneuf_du_pape_rouge_2013,languedoc).
-vignoble(hermitage_rouge_2007,languedoc).
-
-
 nom(syrah_2015,'Syrah 2015 - Vin de pays d\'Oc').
 nom(cotes_rhones_village_2014,'Côtes du Rhônes Villages 2014 "Cuvée Pierre et Charlotte"').
 nom(tautavel_2014, 'Tautavel 2014 - Côtes du Roussillon Villages').
@@ -33,6 +9,54 @@ nom(saint_joseph_2014, 'Saint-Joseph 2014').
 nom(gigondas_2014, 'Gigondas 2014').
 nom(chateauneuf_du_pape_rouge_2013, 'Châteauneuf-du-Pape rouge 2013').
 nom(hermitage_rouge_2007, 'Hermitage rouge 2007').
+
+conseil(syrah_2015, oui).
+conseil(cotes_rhones_village_2014, oui).
+conseil(tautavel_2014, oui).
+conseil(lirac_2015, non).
+conseil(cairanne_2014, oui).
+conseil(beaumes_venise_2015, non).
+conseil(vacqueyras_2014, non).
+conseil(saint_joseph_2014, non).
+conseil(gigondas_2014, non).
+conseil(chateauneuf_du_pape_rouge_2013, non).
+conseil(hermitage_rouge_2007, oui).
+
+accompagnement(syrah_2015, [poisson]).
+accompagnement(cotes_rhones_village_2014, [canard]).
+accompagnement(tautavel_2014, [canard]).
+accompagnement(lirac_2015, [boeuf]).
+accompagnement(cairanne_2014, [dinde]).
+accompagnement(beaumes_venise_2015, [lapin]).
+accompagnement(vacqueyras_2014, [perdrix]).
+accompagnement(saint_joseph_2014, [faisan]).
+accompagnement(gigondas_2014, [thon]).
+accompagnement(chateauneuf_du_pape_rouge_2013, [poisson]).
+accompagnement(hermitage_rouge_2007, [porc]).
+
+vignoble(syrah_2015, rhone).
+vignoble(cotes_rhones_village_2014, rhone).
+vignoble(tautavel_2014, rhone).
+vignoble(lirac_2015, rhone).
+vignoble(cairanne_2014, rhone).
+vignoble(beaumes_venise_2015, rhone).
+vignoble(vacqueyras_2014, rhone).
+vignoble(saint_joseph_2014, rhone).
+vignoble(gigondas_2014, rhone).
+vignoble(chateauneuf_du_pape_rouge_2013, rhone).
+vignoble(hermitage_rouge_2007, rhone).
+
+vignoble(syrah_2015, languedoc).
+vignoble(cotes_rhones_village_2014,languedoc).
+vignoble(tautavel_2014,languedoc).
+vignoble(lirac_2015,languedoc).
+vignoble(cairanne_2014,languedoc).
+vignoble(beaumes_venise_2015,languedoc).
+vignoble(vacqueyras_2014,languedoc).
+vignoble(saint_joseph_2014,languedoc).
+vignoble(gigondas_2014,languedoc).
+vignoble(chateauneuf_du_pape_rouge_2013,languedoc).
+vignoble(hermitage_rouge_2007,languedoc).
 
 prix(syrah_2015, 5.14).
 prix(cotes_rhones_village_2014, 7.36).
@@ -237,3 +261,18 @@ description(hermitage_rouge_2007,
       [
        ['vin de grande allure, racé, qui s\'épanouit superbement','.']
        ]).
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

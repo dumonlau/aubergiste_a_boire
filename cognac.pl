@@ -2,9 +2,18 @@ nom(trois_etoiles, 'Cognac Trois Etoiles').
 nom(fine_champagne, 'Cognac "Fine Champagne"').
 nom(grande_champagne, 'Cognac "Grande Champagne"').
 
+conseil(trois_etoiles, non).
+conseil(fine_champagne, oui).
+conseil(grande_champagne, non).
+
+accompagnement(trois_etoiles, []).
+accompagnement(fine_champagne, []).
+accompagnement(grande_champagne, []).
+
+
 vignoble(trois_etoiles,cognac).
-vignoble(fine_champagne, cognac).
-vignoble(grande_champagne, cognac).
+vignoble(fine_champagne,cognac).
+vignoble(grande_champagne,cognac).
 
 prix(trois_etoiles, 20.87).
 prix(fine_champagne, 22.26).
@@ -49,6 +58,11 @@ description(grande_champagne,
   [
      ['','.']
   ]).
+
+
+
+
+
 
 
 
