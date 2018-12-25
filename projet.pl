@@ -31,18 +31,37 @@ produire_reponse(L,Rep) :-
 
    mclef(M,_),
    member(M,L),
+   write('L : '),
+   write(L),
    clause(regle_rep(M,_,Pattern,Rep),Body),
+   write(' P1 : '),
+   write(Pattern),
    match_pattern(Pattern,L),
    call(Body), !.
 
 produire_reponse(_,[L1,L2, L3]) :-
    L1 = [je, ne, comprends, pas, votre, question, '.'],
-   L2 = [veuillez, la, reformuler],
+   L2 = [veuillez, la, reformuler, en, faisant, attention, à, 'l\'orthographe'],
    L3 = ['j\'essaierai d\'y répondre'].
 
 match_pattern(Pattern,Lmots) :-
-   nom_vins_uniforme(Lmots,L_mots_unif),
+   remplacer_liste_synonyme(Lmots, Lmots1),
+   nom_vins_uniforme(Lmots1,L_mots_unif),
    sublist(Pattern,L_mots_unif).
+
+
+remplacer_liste_synonyme([],[]) :- !.
+remplacer_liste_synonyme([T1|Q1], [T2|L2]) :-
+   remplacer_mot_synonyme(T1,T2),
+   remplacer_liste_synonyme(Q1,L2).
+
+
+remplacer_mot_synonyme(T,S) :-
+       synonyme(T,S), !.
+
+remplacer_mot_synonyme(T,T).
+
+
 
 sublist(SL,L) :-
    prefix(SL,L), !.
@@ -96,20 +115,23 @@ replace_vin(L,X,[H|In],[H|Out]) :-
 
 % ----------------------------------------------------------------%
 
+:- include('synonyme.pl').
 :- include('bordeau.pl').
 :- include('rhone_languedoc.pl').
+:- include('blanc.pl').
 :- include('champagne.pl').
 :- include('cognac.pl').
 
 % Mots-clés %
 
 mclef(vignoble,10).
-mclef(millesime,10).
+mclef(millésime,10).
+mclef(millésimes,10).
 mclef(bouche,10).
 mclef(nez,10).
 mclef(appellation,10).
-mclef(robe,5).
 mclef(prix,10).
+mclef(robe,5).
 mclef(vin,5).
 mclef(vins,5).
 
@@ -119,9 +141,18 @@ mclef(vins,5).
 regle_rep(bouche,1,
   [ que, donne, le, Vin, en, bouche ],
   Rep ) :-
+
      bouche(Vin,Rep).
 
 % ----------------------------------------------------------------%
+
+%-----------------------------------------------------------------%
+regle_rep(robe,10,
+  [ quelle, est, la, robe, de, ce, Vin ],
+  Rep ) :-
+     robe(Vin,Rep).
+
+%-----------------------------------------------------------------%
 
 regle_rep(vins,2,
   [ auriezvous, des, vins, entre, X, et, Y, eur ],
@@ -245,6 +276,57 @@ lvins_accompagnement(A,Lvins) :-
    findall(Vin , vin_accompagnement(Vin,A), Lvins ).
 
 
+%------------------------------------------------------------------------%
+regle_rep(vins,8,
+  [ nous, avons, un, budget, de, X, eur, quels, vins, nous, proposez, vous ],
+  Rep) :-
+
+     lvins_prix_max(X,Lvins),
+     rep_lvins_max(Lvins,Rep).
+
+rep_lvins_max([], [[ non, '.' ]]).
+rep_lvins_max([H|T], [ [ oui, '.', je, dispose, de ] | L]) :-
+   rep_litems_vin_max([H|T],L).
+
+rep_litems_vin_max([],[]) :- !.
+rep_litems_vin_max([(V,P)|L], [Irep|Ll]) :-
+   nom(V,Appellation),
+   Irep = [ '- ', Appellation, '(', P, ' EUR )' ],
+   rep_litems_vin_max(L,Ll).
+
+prix_vin_max(Vin,P,Max) :-
+   prix(Vin,P),
+   P =< Max.
+
+lvins_prix_max(Max,Lvins) :-
+   findall( (Vin,P) , prix_vin_max(Vin,P,Max), Lvins ).
+
+
+% -----------------------------------------------------------------------%
+regle_rep(millésimes,9,
+   [ comme, Vignoble, quels, sont, les, millésimes, mentionnés, comme, Niveau],
+    Rep) :-
+   lvins_millesime(Vignoble,Niveau,Lvins),
+   rep_lvins_millesime(Lvins,Rep).
+
+rep_lvins_millesime([],[[aucun, '.']]).
+rep_lvins_millesime([H|T],[ [plusieurs, '.', voice, ce, que, contient, notre, cave ] | L]) :-
+   rep_litems_millesime([H|T],L).
+
+rep_litems_millesime([],[]) :- !.
+rep_litems_millesime([V|L],[Irep|L1]) :-
+   nom(V,A),
+   millesime(V,M,_),
+   Irep = ['- ', A, '(', M, ')'],
+   rep_litems_millesime(L,L1).
+
+lvins_millesime(Vignoble,Niveau,Lvins) :-
+   findall(Vin,vignoble(Vin,Vignoble), Lvins1),
+   findall(Vin,millesime(Vin,_,Niveau), Lvins2),
+   intersection(Lvins1, Lvins2, Lvins).
+
+
+
 
 /* --------------------------------------------------------------------- */
 /*                                                                       */
@@ -280,8 +362,22 @@ my_char_type(X,punctuation) :- X >= 46, X =< 47, !.
 my_char_type(X,punctuation) :- X >= 58, X =< 64, !.
 my_char_type(X,punctuation) :- X >= 91, X =< 96, !.
 my_char_type(X,punctuation) :- X >= 123, X =< 126, !.
+
+%Traitement des caractères accentués mais il semble se baser sur UTF8%
+my_char_type(X,alphanumeric) :-
+
+   X >= 224,
+   X =< 236, !.
+
 my_char_type(_,special).
 
+
+
+caractere_special(X,Y) :-
+   X = 226,
+   Y = 97, !.
+
+caractere_special(X,X).
 
 /*****************************************************************************/
 % lower_case(+C,?L)
@@ -303,8 +399,9 @@ lower_case(X,X).
 
 read_lc_string(String) :-
 	get0(FirstChar),
-	lower_case(FirstChar,LChar),
-	read_lc_string_aux(LChar,String).
+	lower_case(FirstChar,LChar1),
+        caractere_special(LChar1,LChar2),
+	read_lc_string_aux(LChar2,String).
 
 read_lc_string_aux(10,[]) :- !.  % end of line
 

@@ -1,20 +1,19 @@
-nom(chateau_moulin_de_mallet_2014,'Ch. Moulin de Mallet 2014 - Bordeaux').
-nom(chateau_la_fleur_baudron_2014, 'Ch. La Fleur Baudron 2014 - Bordeaux Supérieur').
-nom(chateau_bois_vert_2014, 'Ch. Bois Vert "Cuvée Elégance" 2014 ').
-nom(chateau_paret_2012, 'Ch. Paret 2012').
-nom(chateau_menota_2014, 'Ch. Ménota 2014').
+nom(chateau_moulin_de_mallet_2014,'Château Moulin de Mallet 2014').
+nom(chateau_la_fleur_baudron_2014, 'Château La Fleur Baudron 2014').
+nom(chateau_bois_vert_2014, 'Château Bois Vert "Cuvée Elégance" 2014 ').
+nom(chateau_paret_2012, 'Château Paret 2012').
+nom(chateau_menota_2014, 'Château Ménota 2014').
 nom(madiran_vieilles_vignes_2006, 'Madiran Vieilles Vignes 2006').
-nom(chateau_du_moulin_neuf_2014, 'Ch. Moulin Neuf 2014').
-nom(chateau_milon_la_grave_2012, 'Ch. Milon La Grave 2012').
-nom(chateau_roc_de_binet_2010, 'Ch. Roc de Binet 2010').
-nom(chateau_ruat_2010, 'Ch. Ruat 2010').
-nom(chateau_les_polyanthas_2010,'Ch. Les Polyanthas 2010').
-nom(chateau_la_menotte_2012, 'Ch. La Menotte 2012').
+nom(chateau_du_moulin_neuf_2014, 'Château Moulin Neuf 2014').
+nom(chateau_milon_la_grave_2012, 'Château Milon La Grave 2012').
+nom(chateau_roc_de_binet_2010, 'Château Roc de Binet 2010').
+nom(chateau_ruat_2010, 'Château Ruat 2010').
+nom(chateau_les_polyanthas_2010,'Château Les Polyanthas 2010').
+nom(chateau_la_menotte_2012, 'Château La Menotte 2012').
 nom(la_fleur_de_pomys_2012, 'La Fleur de Pomys 2012').
 nom(florilege_pauillac_2011, 'Florilège Pauillac 2011').
 nom(florilege_saint_julien_2010, 'Florilège Saint Julien 2010').
 nom(florilege_pomerol_2012, 'Florilège Pomerol 2012').
-
 
 conseil(chateau_moulin_de_mallet_2014,oui).
 conseil(chateau_la_fleur_baudron_2014, oui).
@@ -52,41 +51,41 @@ accompagnement(florilege_saint_julien_2010, [poisson]).
 accompagnement(florilege_pomerol_2012, [porc]).
 
 
-vignoble(chateau_moulin_de_mallet_2014,bordeaux).
-vignoble(chateau_la_fleur_baudron_2014,bordeaux).
-vignoble(chateau_bois_vert_2014,bordeaux).
-vignoble(chateau_paret_2012,bordeaux).
-vignoble(chateau_menota_2014,bordeaux).
-vignoble(madiran_vieilles_vignes_2006,bordeaux).
-vignoble(chateau_du_moulin_neuf_2014,bordeaux).
-vignoble(chateau_milon_la_grave_2012,bordeaux).
-vignoble(chateau_roc_de_binet_2010,bordeaux).
-vignoble(chateau_ruat_2010,bordeaux).
-vignoble(chateau_les_polyanthas_2010,bordeaux).
-vignoble(chateau_la_menotte_2012,bordeaux).
-vignoble(la_fleur_de_pomys_2012,bordeaux).
-vignoble(florilege_pauillac_2011,bordeaux).
-vignoble(florilege_saint_julien_2010,bordeaux).
-vignoble(florilege_pomerol_2012,bordeaux).
+vignoble(chateau_moulin_de_mallet_2014,bordeau).
+vignoble(chateau_la_fleur_baudron_2014,bordeau).
+vignoble(chateau_bois_vert_2014,bordeau).
+vignoble(chateau_paret_2012,bordeau).
+vignoble(chateau_menota_2014,bordeau).
+vignoble(madiran_vieilles_vignes_2006,bordeau).
+vignoble(chateau_du_moulin_neuf_2014,bordeau).
+vignoble(chateau_milon_la_grave_2012,bordeau).
+vignoble(chateau_roc_de_binet_2010,bordeau).
+vignoble(chateau_ruat_2010,bordeau).
+vignoble(chateau_les_polyanthas_2010,bordeau).
+vignoble(chateau_la_menotte_2012,bordeau).
+vignoble(la_fleur_de_pomys_2012,bordeau).
+vignoble(florilege_pauillac_2011,bordeau).
+vignoble(florilege_saint_julien_2010,bordeau).
+vignoble(florilege_pomerol_2012,bordeau).
 
 
-millesime(les_chaboeufs_2013, 2013).
-millesime(chateau_moulin_de_mallet_2014, 2014).
-millesime(chateau_la_fleur_baudron_2014, 2014).
-millesime(chateau_bois_vert_2014, 2014).
-millesime(chateau_paret_2012, 2012).
-millesime(chateau_menota_2014, 2014).
-millesime(madiran_vieilles_vignes_2006, 2006).
-millesime(chateau_du_moulin_neuf_2014, 2014).
-millesime(chateau_milon_la_grave_2012, 2012).
-millesime(chateau_roc_de_binet_2010, 2010).
-millesime(chateau_ruat_2010, 2010).
-millesime(chateau_les_polyanthas_2010, 2010).
-millesime(chateau_la_menotte_2012, 2012).
-millesime(la_fleur_de_pomys_2012, 2012).
-millesime(florilege_pauillac_2011, 2011).
-millesime(florilege_saint_julien_2010, 2010).
-millesime(florilege_pomerol_2012, 2012).
+millesime(les_chaboeufs_2013, 2013, pauvre).
+millesime(chateau_moulin_de_mallet_2014, 2014, excellent).
+millesime(chateau_la_fleur_baudron_2014, 2014, excellent).
+millesime(chateau_bois_vert_2014, 2014, excellent).
+millesime(chateau_paret_2012, 2012, exceptionnel).
+millesime(chateau_menota_2014, 2014, excellent).
+millesime(madiran_vieilles_vignes_2006, 2006, remarquable).
+millesime(chateau_du_moulin_neuf_2014, 2014, excellent).
+millesime(chateau_milon_la_grave_2012, 2012, exceptionnel).
+millesime(chateau_roc_de_binet_2010, 2010, bon).
+millesime(chateau_ruat_2010, 2010, bon).
+millesime(chateau_les_polyanthas_2010, 2010, bon).
+millesime(chateau_la_menotte_2012, 2012, exceptionnel).
+millesime(la_fleur_de_pomys_2012, 2012, exceptionnel).
+millesime(florilege_pauillac_2011, 2011, excellent).
+millesime(florilege_saint_julien_2010, 2010, bon).
+millesime(florilege_pomerol_2012, 2012, exceptionnel).
 
 prix(chateau_moulin_de_mallet_2014, 6.85).
 prix(chateau_la_fleur_baudron_2014, 7.48).
