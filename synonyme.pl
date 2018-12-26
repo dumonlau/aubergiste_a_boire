@@ -8,3 +8,9 @@ synonyme(euro, eur).
 synonyme(bons, bon).
 synonyme(pauvres,pauvre).
 synonyme(bordeaux,bordeau).
+synonyme(noël, fete).
+synonyme(noel, fete).
+synonyme(paques, fete).
+
+
+

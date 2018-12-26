@@ -1,42 +1,25 @@
 :- use_module(library(lists)).
 
+%---------------ne pas afficher les warnings discontiguous------%
 :- style_check(-discontiguous).
-
-/* --------------------------------------------------------------------- */
-/*                                                                       */
-/*        PRODUIRE_REPONSE(L_Mots,L_Lignes_reponse) :                    */
-/*                                                                       */
-/*        Input : une liste de mots L_Mots representant la question      */
-/*                de l'utilisateur                                       */
-/*        Output : une liste de liste de lignes correspondant a la       */
-/*                 reponse fournie par le bot                            */
-/*                                                                       */
-/*        NB Pour l'instant le predicat retourne dans tous les cas       */
-/*            [  [je, ne, sais, pas, '.'],                               */
-/*               [les, etudiants, vont, m, '\'', aider, '.'],            */
-/*               ['vous le verrez !']                                    */
-/*            ]                                                          */
-/*                                                                       */
-/*        Je ne doute pas que ce sera le cas ! Et vous souhaite autant   */
-/*        d'amusement a coder le predicat que j'ai eu a ecrire           */
-/*        cet enonce et ce squelette de solution !                       */
-/*                                                                       */
-/* --------------------------------------------------------------------- */
-
-
-/*                      !!!    A MODIFIER   !!!                          */
 
 produire_reponse([fin],[L1]) :-
    L1 = [merci, de, m, '\'', avoir, consulte], !.
 
+%--------------Traitement positif-------------------------------%
 produire_reponse(L,Rep) :-
 
    mclef(M,_),
    member(M,L),
+   write('L : '),
+   write(L),
    clause(regle_rep(M,_,Pattern,Rep),Body),
+   write('P : '),
+   write(Pattern),
    match_pattern(Pattern,L),
    call(Body), !.
 
+%---------------Traitement erreur sur données-------------------%
 produire_reponse(L,[L1,L2,L3,L4]) :-
    member('bouche',L),
    L1 = [je, crois, que, votre, question, porte, sur, la, bouche, 'd\'un', vin],
@@ -51,6 +34,7 @@ produire_reponse(L,[L1,L2,L3,L4]) :-
    L3 = [si, le, vin, est, repris, dans, notre, catalogue,'j\'essaierai alors d\'y répondre'],
    L4 = [sinon, cela, signifie, que, ce, vin, 'n\'est', pas, repris, dans, notre, catalogue],!.
 
+%---------------Traitement erreur sur orthographe----------------%
 produire_reponse(_,[L1,L2, L3]) :-
    L1 = [je, ne, comprends, pas, votre, question, '.'],
    L2 = [veuillez, la, reformuler, en, faisant, attention, à, 'l\'orthographe'],
@@ -61,7 +45,7 @@ match_pattern(Pattern,Lmots) :-
    nom_vins_uniforme(Lmots1,L_mots_unif),
    sublist(Pattern,L_mots_unif).
 
-
+%--------------remplacer les mots pluriels et accentués----------%
 remplacer_liste_synonyme([],[]) :- !.
 remplacer_liste_synonyme([T1|Q1], [T2|L2]) :-
    remplacer_mot_synonyme(T1,T2),
@@ -124,7 +108,7 @@ replace_vin(_,_,[],[]) :- !.
 replace_vin(L,X,[H|In],[H|Out]) :-
    replace_vin(L,X,In,Out).
 
-% ----------------------------------------------------------------%
+% ---------------------inclure la base de données------------------%
 
 :- include('synonyme.pl').
 :- include('bordeau.pl').
@@ -148,11 +132,29 @@ mclef(vins,5).
 mclef(température,5).
 mclef(accompagnement,5).
 mclef(accompagnements,5).
+mclef(informations,1).
+
+% ----------------------------------------------------------------%
+
+regle_rep(informations,1,
+  [ avez, vous, des, informations, sur, le, Vin],
+  Rep ) :-
+
+   vin_existe(Vin,Rep).
+
+vin_existe(V,[[oui, '.']]) :-
+   nom(V,_),!.
+
+vin_existe(_,[[non, '.']]).
 
 
 % ----------------------------------------------------------------%
 
-regle_rep(bouche,1,
+
+
+% ----------------------------------------------------------------%
+
+regle_rep(bouche,2,
   [ que, donne, le, Vin, en, bouche ],
   Rep ) :-
    vin_bouche(Vin,Bouche),
@@ -169,13 +171,12 @@ rep_vin_bouche([[B|_]|_],[[non, spécifié,'.']]) :-
 
 rep_vin_bouche(B,B).
 
-
 % ----------------------------------------------------------------%
 
 %-----------------------------------------------------------------%
-regle_rep(robe,10,
-  [ quelle, est, la, robe, de, ce, Vin ],
-  Rep ) :-
+regle_rep(robe,4,
+  [ quelle, est, la, robe, de, ce, Vin ],Rep ) :-
+
      vin_robe(Vin,Robe),
      rep_vin_robe(Robe,Rep).
 
@@ -195,12 +196,18 @@ vin_robe(V,[[non, spécifié,'.']]) :-
 %-----------------------------------------------------------------%
 
 %-----------------------------------------------------------------%
-regle_rep(vins,2,
-  [ auriezvous, des, vins, entre, X, et, Y, eur ],
+regle_rep(vins,5,
+  [ auriez, vous, des, vins, entre, X, et, Y, eur ],
   Rep) :-
 
+     valider_min_max(X,Y,Rep),
      lvins_prix_min_max(X,Y,Lvins),
      rep_lvins_min_max(Lvins,Rep).
+
+valider_min_max(X,Y,[[]]) :-
+   X < Y,!.
+valider_min_max(_,_, [[bornes, inversées]]) :-
+   fail.
 
 rep_lvins_min_max([], [[ non, '.' ]]).
 rep_lvins_min_max([H|T], [ [ oui, '.', je, dispose, de ] | L]) :-
@@ -223,7 +230,7 @@ lvins_prix_min_max(Min,Max,Lvins) :-
 
 %-----------------------------------------------------------------%
 
-regle_rep(vins,3,
+regle_rep(vins,6,
    [ quels, vins, de, Vignoble, avez, vous],
     Rep) :-
    lvins_vignoble(Vignoble,Lvins),
@@ -247,20 +254,31 @@ lvins_vignoble(Vignoble,Lvins) :-
 
 % -----------------------------------------------------------------------%
 
-regle_rep(appellation,4,
-  [ que, recouvre,l,appellation, Vin],
-  Rep ) :-
+regle_rep(appellation,7,
+  [ que, recouvre,l,appellation, Vin], Rep) :-
 
-     description(Vin,Rep).
+     vin_appellation(Vin,Appellation),
+     rep_vin_appellation(Appellation,Rep).
+
+rep_vin_appellation([[A|_]|_],[[non, spécifié,'.']]) :-
+     A = '',!.
+
+rep_vin_appellation(A,A).
+
+vin_appellation(V,A) :-
+     description(V,A),!.
+
+vin_appellation(V,[[non, spécifié,'.']]) :-
+     description(V,_).
+
 
 
 % -----------------------------------------------------------------------%
 
 % -----------------------------------------------------------------------%
 
-regle_rep(vins,5,
-   [ quels, vins, de, Vignoble, me, conseillez, vous],
-    Rep) :-
+regle_rep(vins,8,[ quels, vins, de, Vignoble, me, conseillez, vous], Rep) :-
+
    lvins_vignoble_conseil(Vignoble,Lvins),
    rep_lvins_vignoble_conseil(Lvins,Rep).
 
@@ -284,9 +302,8 @@ lvins_vignoble_conseil(Vignoble,Lvins) :-
 
 % -----------------------------------------------------------------------%
 
-regle_rep(vins,6,
-   [ quels, autres, vins, de, Vignoble, auriez, vous],
-    Rep) :-
+regle_rep(vins,9, [ quels, autres, vins, de, Vignoble, auriez, vous], Rep) :-
+
    lvins_vignoble_autre(Vignoble,Lvins),
    rep_lvins_vignoble_autre(Lvins,Rep).
 
@@ -311,36 +328,36 @@ lvins_vignoble_autre(Vignoble,Lvins) :-
 
 % -----------------------------------------------------------------------%
 
-regle_rep(vins,7,
-   [pour, noel, je, pense, faire, du, Accompagnement, quels, vins, conseillez, vous],
+regle_rep(vins,10,
+   [pour, fete, je, pense, faire, du, Plat, quels, vins, conseillez, vous],
     Rep) :-
 
-     lvins_accompagnement(Accompagnement,Lvins),
-     rep_lvins_accompagnement(Lvins,Rep).
+     lvins_plat(Plat,Lvins),
+     rep_lvins_plat(Lvins,Rep).
 
-rep_lvins_accompagnement([], [[ aucune, idée, '.' ]]).
-rep_lvins_accompagnement([H|T], [ [ oui, '.', je, vous, conseille ] | L]) :-
-   rep_litems_accompagnement([H|T],L).
+rep_lvins_plat([], [[ aucune, idée, '.' ]]).
+rep_lvins_plat([H|T], [ [ oui, '.', je, vous, conseille ] | L]) :-
+   rep_litems_plat([H|T],L).
 
-rep_litems_accompagnement([],[]) :- !.
-rep_litems_accompagnement([V|L], [Irep|Ll]) :-
+rep_litems_plat([],[]) :- !.
+rep_litems_plat([V|L], [Irep|Ll]) :-
    nom(V,A),
    Irep = [ '- ', A ],
-   rep_litems_accompagnement(L,Ll).
+   rep_litems_plat(L,Ll).
 
-vin_accompagnement(Vin,A) :-
+vin_plat(Vin,A) :-
    accompagnement(Vin,As,_),
    member(A,As).
 
-lvins_accompagnement(A,Lvins) :-
-   findall(Vin , vin_accompagnement(Vin,A), Lvins ).
+lvins_plat(A,Lvins) :-
+   findall(Vin , vin_plat(Vin,A), Lvins ).
 
 % -----------------------------------------------------------------------%
 
 
 
 %------------------------------------------------------------------------%
-regle_rep(vins,8,
+regle_rep(vins,11,
   [ nous, avons, un, budget, de, X, eur, quels, vins, nous, proposez, vous ],
   Rep) :-
 
@@ -369,7 +386,7 @@ lvins_prix_max(Max,Lvins) :-
 
 
 % -----------------------------------------------------------------------%
-regle_rep(millésimes,9,
+regle_rep(millésimes,12,
    [ comme, Vignoble, quels, sont, les, millésimes, mentionnés, comme, Niveau],
     Rep) :-
    lvins_millesime(Vignoble,Niveau,Lvins),
@@ -395,12 +412,11 @@ lvins_millesime(Vignoble,Niveau,Lvins) :-
 
 % -----------------------------------------------------------------------%
 
-regle_rep(accompagnements,11,
+regle_rep(accompagnements,13,
    [quels, sont, les, accompagnements, à, éviter, pour, le, Vin],
     Rep) :-
 
      vin_eviter(Vin,LMets),
-     write(' Ok2 '),
      rep_vin_mets_eviter(LMets,Rep).
 
 rep_vin_mets_eviter([], [[ aucune, contre-indication, '.' ]]).
@@ -423,7 +439,7 @@ vin_eviter(Vin,LMets) :-
 
 % -----------------------------------------------------------------------%
 
-regle_rep(température,12,
+regle_rep(température,14,
    [a, quelle, température, faut, il, servir, le, Vin],
     Rep) :-
      vin_temperatures(Vin,Tmin,Tmax),
@@ -727,10 +743,25 @@ fin(L) :- member(fin,L).
 
 grandgousier :-
 
-   nl, nl, nl,
-   write('Bonjour, je suis Grandgousier, GGS pour les intimes,'), nl,
-   write('conseiller en vin. En quoi puis-je vous etre utile ?'),
    nl, nl,
+   write('Bonjour, en quoi puis-je vous être utile ?'), nl,
+   write('Voici la liste des questions que vous pouvez me poser :'),nl,nl,
+   write('1. Avez-vous des informations sur le (vin) ?'), nl,
+   write('2. Que donne le (vin) en bouche ?'), nl,
+   write('3. Que donne le (vin) au nez ?'), nl,
+   write('4. Quelle est la robe de ce (xxx) ?'), nl,
+   write('5. Auriez vous des vins entre (xxx) et (yyy) eur ?'), nl,
+   write('6. Quels vins de (xxx) avez vous ?'), nl,
+   write('7. Que recouvre l appellation (xxx) ?'), nl,
+   write('8. Quels vins de (xxx) me conseillez vous ?'), nl,
+   write('9. Quels autres vins de (xxx) auriez vous ?'), nl,
+   write('10. Pour (fête), je pense faire du (plat), quels vins conseillez vous ?'), nl,
+   write('11. Nous avons un budget de (x) eur, quels vins nous proposez vous ?'), nl,
+   write('12. Comme (vignoble) quels sont les millésimes mentionnés comme (niveau) ?'), nl,
+   write('13. Quels sont les accompagnements à éviter pour le (vin) ?'), nl,
+   write('14. A quelle température faut il servir le (vin) ?'), nl,
+
+   nl,nl,
 
    repeat,
       write('Vous : '),
