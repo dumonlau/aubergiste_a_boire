@@ -1,5 +1,7 @@
 :- use_module(library(lists)).
 
+:- style_check(-discontiguous).
+
 /* --------------------------------------------------------------------- */
 /*                                                                       */
 /*        PRODUIRE_REPONSE(L_Mots,L_Lignes_reponse) :                    */
@@ -31,14 +33,23 @@ produire_reponse(L,Rep) :-
 
    mclef(M,_),
    member(M,L),
-   write('L : '),
-   write(L),
    clause(regle_rep(M,_,Pattern,Rep),Body),
-   write(' P1 : '),
-   write(Pattern),
    match_pattern(Pattern,L),
-   write('OK pattern'),
    call(Body), !.
+
+produire_reponse(L,[L1,L2,L3,L4]) :-
+   member('bouche',L),
+   L1 = [je, crois, que, votre, question, porte, sur, la, bouche, 'd\'un', vin],
+   L2 = [veuillez, vérifier, 'l\'orthographe', du, vin],
+   L3 = [si, le, vin, est, repris, dans, notre, catalogue,'j\'essaierai alors d\'y répondre'],
+   L4 = [sinon, cela, signifie, que, ce, vin, 'n\'est', pas, repris, dans, notre, catalogue],!.
+
+produire_reponse(L,[L1,L2,L3,L4]) :-
+   member('robe',L),
+   L1 = [je, crois, que, votre, question, porte, sur, la, robe, 'd\'un', vin],
+   L2 = [veuillez, vérifier, 'l\'orthographe', du, vin],
+   L3 = [si, le, vin, est, repris, dans, notre, catalogue,'j\'essaierai alors d\'y répondre'],
+   L4 = [sinon, cela, signifie, que, ce, vin, 'n\'est', pas, repris, dans, notre, catalogue],!.
 
 produire_reponse(_,[L1,L2, L3]) :-
    L1 = [je, ne, comprends, pas, votre, question, '.'],
@@ -144,21 +155,20 @@ mclef(accompagnements,5).
 regle_rep(bouche,1,
   [ que, donne, le, Vin, en, bouche ],
   Rep ) :-
-   write('vin1 : '),
-   write(Vin),
    vin_bouche(Vin,Bouche),
    rep_vin_bouche(Bouche,Rep).
+
+vin_bouche(V,B) :-
+   bouche(V,B),!.
+
+vin_bouche(V,[[non, spécifié,'.']]) :-
+   nom(V,_).
 
 rep_vin_bouche([[B|_]|_],[[non, spécifié,'.']]) :-
    B = '',!.
 
 rep_vin_bouche(B,B).
 
-vin_bouche(Vin,Bouche) :-
-   bouche(Vin,Bouche),!.
-
-vin_bouche(Vin,[[non, spécifié,'.']]) :-
-   nom(Vin,_).
 
 % ----------------------------------------------------------------%
 
@@ -166,7 +176,21 @@ vin_bouche(Vin,[[non, spécifié,'.']]) :-
 regle_rep(robe,10,
   [ quelle, est, la, robe, de, ce, Vin ],
   Rep ) :-
-     robe(Vin,Rep).
+     vin_robe(Vin,Robe),
+     rep_vin_robe(Robe,Rep).
+
+rep_vin_robe([[R|_]|_],[[non, spécifié,'.']]) :-
+     R = '',!.
+
+rep_vin_robe(R,R).
+
+vin_robe(V,R) :-
+     robe(V,R),!.
+
+vin_robe(V,[[non, spécifié,'.']]) :-
+     robe(V,_).
+
+
 
 %-----------------------------------------------------------------%
 
@@ -210,7 +234,7 @@ rep_lvins_vignoble([H|T],[ [plusieurs, '.', nous, avons, dans, notre, cave ] | L
    rep_litems_vin_vignoble([H|T],L).
 
 rep_litems_vin_vignoble([],[]) :- !.
-rep_litems_vin_vignoble([(V,X)|L],[Irep|L1]) :-
+rep_litems_vin_vignoble([(V,_)|L],[Irep|L1]) :-
    nom(V,A),
    Irep = ['- ', A],
    rep_litems_vin_vignoble(L,L1).
