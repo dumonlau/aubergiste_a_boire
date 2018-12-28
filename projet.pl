@@ -26,6 +26,13 @@ produire_reponse(L,[L1,L2,L3,L4]) :-
    L4 = [sinon, cela, signifie, que, ce, vin, 'n\'est', pas, repris, dans, notre, catalogue],!.
 
 produire_reponse(L,[L1,L2,L3,L4]) :-
+   member('nez',L),
+   L1 = [je, crois, que, votre, question, porte, sur, le, nez, 'd\'un', vin],
+   L2 = [veuillez, vérifier, 'l\'orthographe', du, vin],
+   L3 = [si, le, vin, est, repris, dans, notre, catalogue,'j\'essaierai alors d\'y répondre'],
+   L4 = [sinon, cela, signifie, que, ce, vin, 'n\'est', pas, repris, dans, notre, catalogue],!.
+
+produire_reponse(L,[L1,L2,L3,L4]) :-
    member('robe',L),
    L1 = [je, crois, que, votre, question, porte, sur, la, robe, 'd\'un', vin],
    L2 = [veuillez, vérifier, 'l\'orthographe', du, vin],
@@ -146,7 +153,8 @@ mclef(vins,5).
 mclef(temperature,5).
 mclef(accompagnement,5).
 mclef(accompagnements,5).
-mclef(informations,1).
+mclef(informations,3).
+mclef(plus,1).
 
 
 % ----------------------------------------------------------------%
@@ -166,7 +174,6 @@ vin_existe(_,[[non, '.']]).
 % ----------------------------------------------------------------%
 
 
-
 % ----------------------------------------------------------------%
 
 regle_rep(bouche,2,
@@ -178,19 +185,44 @@ regle_rep(bouche,2,
 vin_bouche(V,B) :-
    bouche(V,B),!.
 
-vin_bouche(V,[[non, spécifié,'.']]) :-
+vin_bouche(V,[[non, spécifiée,'.']]) :-
    nom(V,_).
 
-rep_vin_bouche([[B|_]|_],[[non, spécifié,'.']]) :-
+rep_vin_bouche([[B|_]|_],[[non, spécifiée,'.']]) :-
    B = '',!.
 
-rep_vin_bouche([[B|_]|_],[[non, spécifié,'.']]) :-
+rep_vin_bouche([[B|_]|_],[[non, spécifiée,'.']]) :-
    B = '.',!.
 
 rep_vin_bouche(B,B).
 
 
 % ----------------------------------------------------------------%
+
+
+% ----------------------------------------------------------------%
+regle_rep(nez,3,
+  [ que, donne, le, Vin, au, nez ],
+  Rep ) :-
+   vin_nez(Vin,Nez),
+   rep_vin_nez(Nez,Rep).
+
+vin_nez(V,N) :-
+   bouche(V,N),!.
+
+vin_nez(V,[[non, spécifié,'.']]) :-
+   nom(V,_).
+
+rep_vin_nez([[N|_]|_],[[non, spécifié,'.']]) :-
+   N = '',!.
+
+rep_vin_nez([[N|_]|_],[[non, spécifié,'.']]) :-
+   N = '.',!.
+
+rep_vin_nez(N,N).
+
+%-----------------------------------------------------------------%
+
 
 %-----------------------------------------------------------------%
 regle_rep(robe,4,
@@ -482,6 +514,94 @@ vin_temperatures(Vin,Tmin,Tmax) :-
    Tmax = '?'.
 
 % -----------------------------------------------------------------------%
+
+
+% -----------------------------------------------------------------------%
+
+regle_rep(plus,15,
+   [pourriez, vous, m, en, dire, plus, sur, le, Vin],
+    Rep) :-
+     bouche(Vin,Rbouche),
+     nez(Vin, Rnez),
+     robe(Vin, Rrobe),
+     description(Vin, RDescription),
+     prix(Vin, Rprix),
+     formater_bouche(Rbouche, Rep1),
+     formater_nez(Rnez, Rep2),
+     formater_robe(Rrobe, Rep3),
+     formater_description(RDescription,Rep4),
+     formater_prix(Rprix, Rep5),
+     append(Rep1, Rep2, Rep6),
+     append(Rep6, Rep3, Rep7),
+     append(Rep7, Rep4, Rep8),
+     append(Rep8, Rep5, Rep).
+
+formater_bouche([], B2) :-
+     append([[bouche, ':']],[['-']],B2),!.
+
+formater_bouche([[]], B2) :-
+     append([[bouche, ':']],[['-']],B2),!.
+
+formater_bouche([['.']], B2) :-
+     append([[bouche, ':']],[['-']],B2),!.
+
+formater_bouche([[.]], B2) :-
+     append([[bouche, ':']],[['-']],B2),!.
+
+formater_bouche(B1, B2) :-
+     append([[bouche, ':']], B1, B2).
+
+
+formater_nez([], N2) :-
+     append([[nez, ':']],[['-']],N2),!.
+
+formater_nez([[]], N2) :-
+     append([[nez, ':']],[['-']],N2),!.
+
+formater_nez([['.']], N2) :-
+     append([[nez, ':']],[['-']],N2),!.
+
+formater_nez([[.]], N2) :-
+     append([[nez, ':']],[['-']],N2),!.
+
+formater_nez(N1, N2) :-
+     append([[nez, ':']], N1, N2).
+
+
+formater_robe([], R2) :-
+     append([[robe, ':']],[['-']],R2),!.
+
+formater_robe([[]], R2) :-
+     append([[robe, ':']],[['-']],R2),!.
+
+formater_robe([['.']], R2) :-
+     append([[robe, ':']],[['-']],R2),!.
+
+formater_robe([[.]], R2) :-
+     append([[robe, ':']],[['-']],R2),!.
+
+formater_robe(R1, R2) :-
+     append([[robe, ':']], R1, R2).
+
+
+formater_description([], D2) :-
+     append([[description, ':']],[['-']],D2),!.
+
+formater_description([[]], D2) :-
+     append([[description, ':']],[['-']],D2),!.
+
+formater_description([['.']], D2) :-
+     append([[description, ':']],[['-']],D2),!.
+
+formater_description([[.]], D2) :-
+     append([[description, ':']],[['-']],D2),!.
+
+formater_description(D1, D2) :-
+     append([[description, ':']], D1, D2).
+
+formater_prix(P1, P2) :-
+     append([[prix, ':']], P1, P2).
+
 
 % -----------------------------------------------------------------------%
 
@@ -783,6 +903,8 @@ grandgousier :-
    write('12. Comme (vignoble) quels sont les millésimes mentionnés comme (niveau) ?'), nl,
    write('13. Quels sont les accompagnements à éviter pour le (vin) ?'), nl,
    write('14. A quelle température faut il servir le (vin) ?'), nl,
+   write('15. Pourriez vous m\'en dire plus sur le (vin) ?'), nl,
+
 
    nl,nl,
 
