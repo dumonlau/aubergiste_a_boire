@@ -14,13 +14,13 @@ conseil(brut_rose_saignee, non).
 conseil(brut_or_blanc, non).
 conseil(brut_prestige, non).
 
-accompagnement(creman_loire_brut, [canard, poulet]).
-accompagnement(brut_reserve, [poisson, boeuf]).
-accompagnement(extra_brut, [cavier, poisson]).
-accompagnement(brut_oeil_perdrix, [grenouille]).
-accompagnement(brut_rose_saignee, [canard, boeuf]).
-accompagnement(brut_or_blanc, [pigeon]).
-accompagnement(brut_prestige, [poisson, dinde, homard]).
+accompagnement(creman_loire_brut, [canard, poulet],[]).
+accompagnement(brut_reserve, [poisson, boeuf],[]).
+accompagnement(extra_brut, [cavier, poisson],[]).
+accompagnement(brut_oeil_perdrix, [grenouille],[]).
+accompagnement(brut_rose_saignee, [canard, boeuf],[]).
+accompagnement(brut_or_blanc, [pigeon],[]).
+accompagnement(brut_prestige, [poisson, dinde, homard],[]).
 
 
 vignoble(creman_loire_brut,champagne).

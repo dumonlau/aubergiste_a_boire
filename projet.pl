@@ -7,19 +7,17 @@ produire_reponse([fin],[L1]) :-
    L1 = [merci, de, m, '\'', avoir, consulte], !.
 
 %--------------Traitement positif-------------------------------%
-produire_reponse(L,Rep) :-
+produire_reponse(L1,Rep) :-
 
    mclef(M,_),
+   remplacer_liste_synonyme(L1,L),
    member(M,L),
-   write('L : '),
-   write(L),
    clause(regle_rep(M,_,Pattern,Rep),Body),
-   write('P : '),
-   write(Pattern),
    match_pattern(Pattern,L),
    call(Body), !.
 
 %---------------Traitement erreur sur données-------------------%
+
 produire_reponse(L,[L1,L2,L3,L4]) :-
    member('bouche',L),
    L1 = [je, crois, que, votre, question, porte, sur, la, bouche, 'd\'un', vin],
@@ -33,6 +31,21 @@ produire_reponse(L,[L1,L2,L3,L4]) :-
    L2 = [veuillez, vérifier, 'l\'orthographe', du, vin],
    L3 = [si, le, vin, est, repris, dans, notre, catalogue,'j\'essaierai alors d\'y répondre'],
    L4 = [sinon, cela, signifie, que, ce, vin, 'n\'est', pas, repris, dans, notre, catalogue],!.
+
+produire_reponse(L,[L1,L2,L3,L4]) :-
+   member('vins',L),
+   member('eur',L),
+   L1 = [je, crois, que, votre, question, porte, sur, les, vins, compris, entre, deux, prix,'.'],
+   L2 = [veuillez, vérifier, si, les, bornes, minimale, et, maximale, ne, sont, pas, inversées, '.'],
+   L3 = [],
+   L4 = [],!.
+
+produire_reponse(L,[L1,L2,L3,L4]) :-
+   member('vins',L),
+   L1 = [je, crois, que, votre, question, porte, sur, les, vins, 'd\'un', vignoble,'.'],
+   L2 = [veuillez, vérifier, si, le, nom, du, vignoble, est, correct, '.'],
+   L3 = [],
+   L4 = [],!.
 
 %---------------Traitement erreur sur orthographe----------------%
 produire_reponse(_,[L1,L2, L3]) :-
@@ -66,7 +79,7 @@ nom_vins_uniforme(Lmots,L_mots_unif) :-
    L1 = Lmots,
    replace_vin([chateau,moulin,de,mallet,2014],chateau_moulin_de_mallet_2014,L1,L2),
    replace_vin([chateau,la,fleur,baudron,2014],chateau_la_fleur_baudron_2014,L2,L3),
-   replace_vin([chateau,bois,vert,2014],chateau_bois_vert_2014,L3,L4),
+   replace_vin([chateau,bois,vert,cuvée,élégance,2014],chateau_bois_vert_2014,L3,L4),
    replace_vin([chateau,paret,2012],chateau_paret_2012,L4,L5),
    replace_vin([chateau,menota,2014],chateau_menota_2014,L5,L6),
    replace_vin([madiran,vieilles,vignes,2006],madiran_vieilles_vignes_2006,L6,L7),
@@ -74,7 +87,7 @@ nom_vins_uniforme(Lmots,L_mots_unif) :-
    replace_vin([chateau,milon,la,grave,2012],chateau_milon_la_grave_2012,L8,L9),
    replace_vin([chateau,roc,de,binet,2010],chateau_roc_de_binet_2010,L9,L10),
    replace_vin([chateau,ruat,2010],chateau_ruat_2010,L10,L11),
-   replace_vin([chateau,les,polyanthas,2010],chateau_les_polyanthas_2011,L11,L12),
+   replace_vin([chateau,les,polyanthas,2010],chateau_les_polyanthas_2010,L11,L12),
    replace_vin([chateau,la,menotte,2012],chateau_la_menotte_2012,L12,L13),
    replace_vin([la,fleur,de,pomys,2012],la_fleur_de_pomys_2012,L13,L14),
    replace_vin([florilège,pauillac,2011],florilege_pauillac_2011,L14,L15),
@@ -111,6 +124,7 @@ replace_vin(L,X,[H|In],[H|Out]) :-
 % ---------------------inclure la base de données------------------%
 
 :- include('synonyme.pl').
+:- include('vignoble.pl').
 :- include('bordeau.pl').
 :- include('rhone_languedoc.pl').
 :- include('blanc.pl').
@@ -129,10 +143,11 @@ mclef(prix,10).
 mclef(robe,5).
 mclef(vin,5).
 mclef(vins,5).
-mclef(température,5).
+mclef(temperature,5).
 mclef(accompagnement,5).
 mclef(accompagnements,5).
 mclef(informations,1).
+
 
 % ----------------------------------------------------------------%
 
@@ -169,7 +184,11 @@ vin_bouche(V,[[non, spécifié,'.']]) :-
 rep_vin_bouche([[B|_]|_],[[non, spécifié,'.']]) :-
    B = '',!.
 
+rep_vin_bouche([[B|_]|_],[[non, spécifié,'.']]) :-
+   B = '.',!.
+
 rep_vin_bouche(B,B).
+
 
 % ----------------------------------------------------------------%
 
@@ -182,6 +201,9 @@ regle_rep(robe,4,
 
 rep_vin_robe([[R|_]|_],[[non, spécifié,'.']]) :-
      R = '',!.
+
+rep_vin_robe([[R|_]|_],[[non, spécifié,'.']]) :-
+     R = '.',!.
 
 rep_vin_robe(R,R).
 
@@ -200,14 +222,12 @@ regle_rep(vins,5,
   [ auriez, vous, des, vins, entre, X, et, Y, eur ],
   Rep) :-
 
-     valider_min_max(X,Y,Rep),
+     valider_min_max(X,Y),
      lvins_prix_min_max(X,Y,Lvins),
      rep_lvins_min_max(Lvins,Rep).
 
-valider_min_max(X,Y,[[]]) :-
-   X < Y,!.
-valider_min_max(_,_, [[bornes, inversées]]) :-
-   fail.
+valider_min_max(X,Y) :-
+   X =< Y.
 
 rep_lvins_min_max([], [[ non, '.' ]]).
 rep_lvins_min_max([H|T], [ [ oui, '.', je, dispose, de ] | L]) :-
@@ -233,6 +253,7 @@ lvins_prix_min_max(Min,Max,Lvins) :-
 regle_rep(vins,6,
    [ quels, vins, de, Vignoble, avez, vous],
     Rep) :-
+   vignoble_valide(Vignoble),
    lvins_vignoble(Vignoble,Lvins),
    rep_lvins_vignoble(Lvins,Rep).
 
@@ -246,8 +267,12 @@ rep_litems_vin_vignoble([(V,_)|L],[Irep|L1]) :-
    Irep = ['- ', A],
    rep_litems_vin_vignoble(L,L1).
 
-lvins_vignoble(Vignoble,Lvins) :-
-   findall((Vin,Vignoble),vignoble(Vin,Vignoble), Lvins).
+lvins_vignoble(V,Lvins) :-
+   findall((Vin,V),vignoble(Vin,V), Lvins).
+
+vignoble_valide(V) :-
+   vignobles(L),
+   member(V,L).
 
 % -----------------------------------------------------------------------%
 
@@ -336,7 +361,7 @@ regle_rep(vins,10,
      rep_lvins_plat(Lvins,Rep).
 
 rep_lvins_plat([], [[ aucune, idée, '.' ]]).
-rep_lvins_plat([H|T], [ [ oui, '.', je, vous, conseille ] | L]) :-
+rep_lvins_plat([H|T], [ [ je, vous, conseille, ':' ] | L]) :-
    rep_litems_plat([H|T],L).
 
 rep_litems_plat([],[]) :- !.
@@ -364,14 +389,14 @@ regle_rep(vins,11,
      lvins_prix_max(X,Lvins),
      rep_lvins_max(Lvins,Rep).
 
-rep_lvins_max([], [[ non, '.' ]]).
-rep_lvins_max([H|T], [ [ oui, '.', je, dispose, de ] | L]) :-
+rep_lvins_max([], [[ malheureusement, aucun, '.' ]]).
+rep_lvins_max([H|T], [ [avec, un, tel, budget, je, dispose, de, ':' ] | L]) :-
    rep_litems_vin_max([H|T],L).
 
 rep_litems_vin_max([],[]) :- !.
 rep_litems_vin_max([(V,P)|L], [Irep|Ll]) :-
    nom(V,Appellation),
-   Irep = [ '- ', Appellation, '(', P, ' EUR )' ],
+   Irep = [ '- ', Appellation, '(', P, ' eur)' ],
    rep_litems_vin_max(L,Ll).
 
 prix_vin_max(Vin,P,Max) :-
@@ -400,7 +425,7 @@ rep_litems_millesime([],[]) :- !.
 rep_litems_millesime([V|L],[Irep|L1]) :-
    nom(V,A),
    millesime(V,M,_),
-   Irep = ['- ', A, '(', M, ')'],
+   Irep = ['- ', A,'(',M,')'],
    rep_litems_millesime(L,L1).
 
 lvins_millesime(Vignoble,Niveau,Lvins) :-
@@ -413,7 +438,7 @@ lvins_millesime(Vignoble,Niveau,Lvins) :-
 % -----------------------------------------------------------------------%
 
 regle_rep(accompagnements,13,
-   [quels, sont, les, accompagnements, à, éviter, pour, le, Vin],
+   [quels, sont, les, accompagnements, a, éviter, pour, le, Vin],
     Rep) :-
 
      vin_eviter(Vin,LMets),
@@ -439,8 +464,8 @@ vin_eviter(Vin,LMets) :-
 
 % -----------------------------------------------------------------------%
 
-regle_rep(température,14,
-   [a, quelle, température, faut, il, servir, le, Vin],
+regle_rep(temperature,14,
+   [a, quelle, temperature, faut, il, servir, le, Vin],
     Rep) :-
      vin_temperatures(Vin,Tmin,Tmax),
      rep_vin_temperatures([Tmin|Tmax],Rep).
@@ -503,8 +528,6 @@ my_char_type(X,alphanumeric) :-
    X =< 236, !.
 
 my_char_type(_,special).
-
-
 
 caractere_special(X,Y) :-
    X = 226,

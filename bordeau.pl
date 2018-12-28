@@ -4,7 +4,7 @@ nom(chateau_bois_vert_2014, 'Château Bois Vert "Cuvée Elégance" 2014 ').
 nom(chateau_paret_2012, 'Château Paret 2012').
 nom(chateau_menota_2014, 'Château Ménota 2014').
 nom(madiran_vieilles_vignes_2006, 'Madiran Vieilles Vignes 2006').
-nom(chateau_du_moulin_neuf_2014, 'Château Moulin Neuf 2014').
+nom(chateau_du_moulin_neuf_2014, 'Château du Moulin Neuf 2014').
 nom(chateau_milon_la_grave_2012, 'Château Milon La Grave 2012').
 nom(chateau_roc_de_binet_2010, 'Château Roc de Binet 2010').
 nom(chateau_ruat_2010, 'Château Ruat 2010').
@@ -48,7 +48,7 @@ accompagnement(chateau_la_menotte_2012, [porc],[anguille]).
 accompagnement(la_fleur_de_pomys_2012, [porc],[moules]).
 accompagnement(florilege_pauillac_2011, [poisson],[faisan]).
 accompagnement(florilege_saint_julien_2010, [poisson],[sanglier]).
-accompagnement(florilege_pomerol_2012, [porc],[poisson]).
+accompagnement(florilege_pomerol_2012, [porc],[]).
 
 service(chateau_moulin_de_mallet_2014, 15, 20,[dessert]).
 service(chateau_la_fleur_baudron_2014, 12, 16,[entrée]).
