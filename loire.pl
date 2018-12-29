@@ -12,17 +12,17 @@ prix(sancerre_rouge_2015,15.13).
 
 bouche(chinon_vieilles_vignes_2014,
   [
-     ['saveurs d\'une remarquable intensité alliant structure, volume, race et concentration','.']
+     ['saveurs d\'une remarquable intensite alliant structure, volume, race et concentration','.']
   ]).
 bouche(sancerre_rouge_2015,
   [
-     ['bouche délicieuse, charmeuse, déployant ses notes de fruits et d\épices (notes de poivre) avec fraicheur et élégance','.']
+     ['bouche delicieuse, charmeuse, deployant ses notes de fruits et d\'epices (notes de poivre) avec fraicheur et elegance','.']
   ]).
 
 nez(chinon_vieilles_vignes_2014,
   [
-     ['nez bien marqué par le cabernet franc bien mûr', '.'],
-	 ['arômes de réglisse noire, de vanille et de fruits rouges associés à une nuance de sous-bois', '.']
+     ['nez bien marque par le cabernet franc bien mûr', '.'],
+	 ['arômes de reglisse noire, de vanille et de fruits rouges associes à une nuance de sous-bois', '.']
   ]).
 nez(sancerre_rouge_2015,
   [
@@ -33,11 +33,10 @@ nez(sancerre_rouge_2015,
 
 description(chinon_vieilles_vignes_2014,
   [
-     ['un magnifique Chinon, puissant et très bien typé. Gastronomique!', '.']
+     ['un magnifique Chinon, puissant et très bien type. Gastronomique!', '.']
   ]).
 description(sancerre_rouge_2015,
   [
      ['Le vin est rond, ample, souple et soyeux', '.'],
-	 ['la finale très harmonieuse témoigne de la maturité de ce cru', '.']
+	 ['la finale très harmonieuse temoigne de la maturite de ce cru', '.']
   ]).
-

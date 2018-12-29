@@ -163,7 +163,7 @@ description(savigny_les_beaune_2014,
   ]).
 description(savigny_les_beaune_1_cru_2014,
   [
-     ['le climat "Aux Serpentieres" est réputé pout etre à l\origine de vins de caractère, denses et pleins','.'],
+     ['le climat "Aux Serpentieres" est réputé pout etre à l\'origine de vins de caractère, denses et pleins','.'],
 	 ['toute la classe d\'un premier cru','.']
   ]).
 description(aloxe_corton_2014,

@@ -65,20 +65,18 @@ description(chriroubles_2013,
   [
      ['terroir granitique et schisteux d\'origine volcanique','.'],
 	 ['c\est dans cette région que le gamay donne le meilleur de lui-meme','.'],
-	 ['beau souvenir d\un vin tendre et expressif, au fruité harmonieux','.']
+	 ['beau souvenir d\'un vin tendre et expressif, au fruité harmonieux','.']
   ]).
 description(fleurie_2015,
   [
      ['fleurie est la reine des Crus du Beaujolais','.'],
-	 ['l\'harmonie règne','.']
+	 ['l\'harmonie règne','.'],
 	 ['le souvenir est délicieux','.'],
 	 ['coup de coeur','.'],
 	 ['grand millésime!','.']
   ]).
 description(moulin_a_vent_2014,
   [
-     ['ce type de terroir est à l\origine de gamay vineux, très concentrés','.'],
+     ['ce type de terroir est à l\'origine de gamay vineux, très concentrés','.'],
 	 ['la finale, riche et harmonieuse, laisse un excellent souvenir','.']
   ]).
-
-
