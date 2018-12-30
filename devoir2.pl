@@ -50,11 +50,14 @@ associer(A1,[I|L2],_) :-
 
 %position du marié est toujours à la même place relative (n ou n+1)%
 % La position de michel est calculée sur base de la division entière et
-% de son reste
+% de son reste. S'il y a trois couples 2*n = 6 personnes. Michel est en
+% 4 position (n+1) = 6 div 2 (3) + 3 mod 2 (1). S'il y a quatre couples
+% 2*n = 8. Michel est en 4 (n = 8 div 2 (4) + 4 mod 2 (0)
+%
 associer(A1,[I|L2],N) :-
     length(A1,1),
     I = 'michel',
-    C is mod(N,2),
+    C is div(N,2),
     S is mod(C,2),
     M is C + S,
     append((I,M),A1,A2),
@@ -65,7 +68,7 @@ associer(A1,[I|L2],N) :-
 % Il y a deux domaines possibles : gauche/droite de anne/michel ou
 % droite/gauche de anne/michel
 associer(A1,[I|L2],N) :-
-    C is mod(N,2),
+    C is div(N,2),
     S is mod(C,2),
     M is C + S,
     M1 is M - 1,
@@ -123,8 +126,8 @@ meme_hobby([(I1,P1)|A1],N) :-
     hobby(I2, H2),
     intersection(H1,H2,H3),
     length(H3,L),
-    meme_hobby(A1,N),
-    L > 0.
+    L > 0,
+    meme_hobby(A1,N).
 
 %Finalisation du processus récursif sur base d'une liste finalement vide
 rechercher_position_suivante(_,[],_,_) :- !.
@@ -144,10 +147,15 @@ rechercher_position_suivante(P,[_|A1],I2,N) :-
     rechercher_position_suivante(P,A1,I2,N).
 
 
-
-
 % Pas epoux cote a cote
 % ---------------------
+% Double boucle : la première prend invité par invité.
+% La seconde, pour chaque invité, recherche son/sa conjoint/conjointe
+% Une fois trouvé, vérifie qu'ils ne sont pas assis à côté l'un de
+% l'autre.
+% Tient compte du fait que la table est ronde. Ce test empêche les
+% mariés ne soient seuls autour de la table. Donc n>1 pour trouver une
+% solution.
 
 pas_epoux_cote_a_cote([],_) :- !.
 
@@ -176,6 +184,8 @@ rechercher_epoux(I,[_|A],N,P) :-
 
 % Pas d incompatibilite
 % ---------------------
+% Double bouche : pour chaque invité, rechercher son voisin
+% Une fois trouvé, vérifier s'ils ne sont pas incompatibles.
 
 pas_incompatibilite([],_) :- !.
 
@@ -199,7 +209,7 @@ incompatible_suivant(I1,[(I2,P2)|_],P2) :-
     incompatible(I1,I2),!.
 
 incompatible_suivant(I,[_|A],P) :-
-    incompatible_suivant(I1,A,P).
+    incompatible_suivant(I,A,P).
 
 
 % Personnes a des places differentes
